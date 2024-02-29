@@ -1,4 +1,4 @@
-variable "prname" {
+variable "teamname" {
 type= string
 }
 

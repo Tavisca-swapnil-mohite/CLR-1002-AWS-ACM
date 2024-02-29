@@ -12,7 +12,7 @@ module "vpc" {
     var.mandate_tags,
     var.additional_tags_1,
     {
-      "ProductName" = var.prname
+      "TeamName" = var.teamname
 
        }
    )
@@ -46,13 +46,13 @@ module "security_group" {
   name        = "security-gp"
   description = "Security group for ec2"
   vpc_id      = module.vpc.vpc_id
-  ingress_cidr_blocks = ["10.0.0.0/16"]
+  ingress_cidr_blocks = ["172.0.0.0/16"]
   ingress_rules       = ["http-80-tcp", "all-icmp"]
   egress_rules        = ["all-all"]
   tags = merge(
     var.mandate_tags,
      {
-         "ProductName" = var.prname
+         "TeamName" = var.teamname
               }
   
      )
