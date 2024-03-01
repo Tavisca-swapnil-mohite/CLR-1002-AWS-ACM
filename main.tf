@@ -20,7 +20,7 @@ module "vpc" {
   )
 }
 
-/*
+
 ##########################################################################################################
 module "ec2-instance" { 
   source= "./modules/ec2"
@@ -38,10 +38,7 @@ module "ec2-instance" {
     var.additional_tags_ec2,
     {
      Name = "${local.mandate_tags.Product}-${var.additional_tags_ec2.AppName}-ec2"
-    },
-    {
-     BusinessUnit = "${local.config.env}"
-     }
+    }
   )
   
 }
@@ -56,7 +53,7 @@ module "security_group1" {
   description = "Security group for example usage with EC2 instance"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_cidr_blocks = ["10.0.0.0/16"]
+  ingress_cidr_blocks = ["172.0.0.0/20"]
   ingress_rules       = ["http-80-tcp", "all-icmp"]
   egress_rules        = ["all-all"]
 
@@ -66,10 +63,7 @@ module "security_group1" {
     var.additional_tags_sg1,
     {
       Name = "${local.mandate_tags.Product}-${var.additional_tags_sg1.AppName}-sg1"
-    },
-    {
-     BusinessUnit = "${local.config.env}"
-     }
+    }
   ) 
 }
 #-----------------------------------------------------------------------------------------------------------------------
@@ -81,7 +75,7 @@ module "security_group2" {
   description = "Security group for example usage with EC2 instance"
   vpc_id      = module.vpc.vpc_id
 
-  ingress_cidr_blocks = ["10.0.0.0/16"]
+  ingress_cidr_blocks = ["172.0.0.0/20"]
   ingress_rules       = ["https-443-tcp"]
   egress_rules        = ["all-all"]
 
@@ -91,12 +85,9 @@ module "security_group2" {
     var.additional_tags_sg2,
     {
      Name = "${local.mandate_tags.Product}-${var.additional_tags_sg2.AppName}-sg2"
-    },
-    {
-     BusinessUnit = "${local.config.env}"
     }
   ) 
 }
 
-*/
+
 ######################################################################################################################################

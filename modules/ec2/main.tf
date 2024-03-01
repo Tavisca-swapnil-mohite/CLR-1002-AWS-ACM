@@ -17,10 +17,7 @@ module "ec2_instance" {
     volume_type           = "gp3"
            }   
     ]
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags = var.tags
 
 }
 

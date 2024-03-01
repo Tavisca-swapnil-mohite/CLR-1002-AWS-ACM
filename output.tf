@@ -10,7 +10,7 @@ output "common_product" {
 output "common_app" {
   value = var.additional_tags_vpc.AppName
 }
-
+/*
 output "sg1_id" {
 value = module.security_group1.security_group_id
 }
@@ -21,3 +21,4 @@ value = module.security_group1.security_group_vpc_id
 
 
 
+*/

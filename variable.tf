@@ -1,7 +1,7 @@
 
 variable "ec2_name" {
 type= string
-default = "new2"
+default = ""
 }
 
 variable "ami" {
@@ -22,3 +22,10 @@ variable "vpc_security_group_ids" {
   type        = list(string)
   default     = [ ]
 }
+
+variable "tags" {
+  description = "A mapping of tags to assign to the resource"
+  type        = map(string)
+  default     = {}
+}
+
