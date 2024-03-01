@@ -41,7 +41,7 @@ variable "root_block_device" {
   default     = []
 }
 
-variable "security_group_id" {
+variable "vpc_security_group_ids" {
   description = "The VPC Subnet ID to launch in"
   type        = list(any)
   default     = []
