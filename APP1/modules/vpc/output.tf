@@ -1,3 +1,7 @@
+output "global_module_vpc" {
+  value = local.module
+}
+
 output "private_subnets" {
   value = module.vpc.private_subnets
 }
