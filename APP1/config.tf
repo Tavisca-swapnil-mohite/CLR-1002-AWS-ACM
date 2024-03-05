@@ -7,8 +7,9 @@ locals {
   mandate_tags = merge(
     yamldecode(data.local_file.config.content)
   )
-
 }
+
+
 
 
 

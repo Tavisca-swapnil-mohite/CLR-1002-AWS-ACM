@@ -10,7 +10,6 @@ module "vpc" {
   private_subnets = var.private_subnets
   public_subnets  = var.public_subnets 
   tags  = var.tags
-
   enable_nat_gateway = false
   enable_vpn_gateway = true
   
