@@ -16,16 +16,18 @@ variable "resource_tags_vpc" {
 
 variable "resource_tags_ec2" {
   type        = map(string)
-  default     = {AppName = "rabbitmq-cluster"}
+  default     = {AppName = "terra-test",AdditionalTag = "xyz"}
 }
 
 variable "resource_tags_sg1" {
   type        = map(string)
-  default     = {AppName = "public"}
+  default     = {AppName = "public",AdditionalTag = "jkjkj"}
 }
 variable "resource_tags_sg2" {
   type        = map(string)
-  default     = {AppName = "Private"}
+  default     = {AppName = "private",AdditionalTag1 = "xyz",AdditionalTag2 ="Some value"}
+
+   
 }
 
 
