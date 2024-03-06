@@ -4,4 +4,9 @@
      Product= "plt"
      InfraOwner= "sre-cloud-reliability@tavisca.com"
    }
+
+ }
+ variable "org_standards_tags" {
+  type        = map(string)
+  default     = {Backup = "no",DataClassification = "internal"}
 }

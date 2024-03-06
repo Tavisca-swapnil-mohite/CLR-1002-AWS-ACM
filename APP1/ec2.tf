@@ -10,8 +10,8 @@ module "ec2" {
   subnet_id              = module.vpc.public_subnets[0]
   tags = merge(
     local.mandate_tags,
-    var.common_tags,
-    var.resource_tags,
+    var.org_standards_tags,
+    var.environment_tags,
     var.resource_tags_ec2,
     {
      Name = "${local.mandate_tags.Product}-${var.resource_tags_ec2.AppName}-${module.ec2.global_module_ec2}"

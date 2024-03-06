@@ -1,10 +1,5 @@
 
- variable "common_tags" {
-  type        = map(string)
-  default     = {Backup = "no",DataClassification = "internal"}
-}
-
-variable "resource_tags" {
+variable "environment_tags" {
   type        = map(string)
   default     = {}
 }
