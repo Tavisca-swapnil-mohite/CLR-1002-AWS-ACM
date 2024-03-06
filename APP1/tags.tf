@@ -1,11 +1,12 @@
-variable "tags" {
+
+ variable "common_tags" {
   type        = map(string)
-  default     = {}
+  default     = {Backup = "no",DataClassification = "internal"}
 }
 
 variable "resource_tags" {
   type        = map(string)
-  default     = {AppName = "rabbitmq-cluster"}
+  default     = {}
 }
 
 variable "resource_tags_vpc" {
@@ -28,7 +29,3 @@ variable "resource_tags_sg2" {
 }
 
 
-variable "common_tags" {
-  type        = map(string)
-  default     = {Backup = "no",DataClassification = "internal"}
-}

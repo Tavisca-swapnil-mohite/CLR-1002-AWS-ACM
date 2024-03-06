@@ -1,26 +1,8 @@
-
-variable "name" {
-   type = string
-      }
-
-variable "cidr" {
-  type = string
+variable "vpc_security_group_ids" {
+  description = "A list of security group IDs to associate with"
+  type        = list(string)
+  default     = [ ]
 }
-
-variable "azs" {
-type = list(string)
-}
-
-variable "private_subnets" {
-  type = list(string)
-}
-
-variable "public_subnets" {
-  type = list(string)
-}
-
-
-
 
 
 

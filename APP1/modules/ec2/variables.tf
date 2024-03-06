@@ -54,10 +54,10 @@ variable "subnet_id" {
 }
 
 variable "tags" {
-  description = "A mapping of tags to assign to the resource"
   type        = map(string)
-  default     = {}
+  default     = {Backup = "no",DataClassification = "internal"}
 }
+
 
 
 

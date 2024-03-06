@@ -6,7 +6,7 @@ module "ec2" {
   instance_type          = "t2.micro"
   key_name               = "test1"
   monitoring             = false
-  vpc_security_group_ids = ["sg-04134249a94a75ad2","sg-0fe015a39fcda25de"]
+  vpc_security_group_ids = var.vpc_security_group_ids
   subnet_id              = module.vpc.public_subnets[0]
   tags = merge(
     local.mandate_tags,

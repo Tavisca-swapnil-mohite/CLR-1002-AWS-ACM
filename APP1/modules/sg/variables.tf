@@ -13,10 +13,10 @@ variable "vpc_id" {
 }
 
 variable "tags" {
-  description = "A map of tags to assign to the security group"
   type        = map(string)
-  default     = {}
+  default     = {Backup = "no",DataClassification = "internal"}
 }
+
 
 variable "ingress_rules" {
   description = "A list of ingress rules for the security group"

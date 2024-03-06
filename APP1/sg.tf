@@ -33,6 +33,7 @@ module "security_group_1" {
 
   tags = merge(
     local.mandate_tags,
+    var.resource_tags,
     var.common_tags,
     var.resource_tags_sg1,
     {
@@ -68,6 +69,7 @@ module "security_group_2" {
   tags = merge(
     local.mandate_tags,
     var.common_tags,
+    var.resource_tags,
     var.resource_tags_sg2,
     {
      Name = "${local.mandate_tags.Product}-${var.resource_tags_sg2.AppName}-${module.security_group_2.global_module_sg}"
@@ -76,24 +78,5 @@ module "security_group_2" {
 }
 
 
-
-output "security_group_1_id" {
-  value = module.security_group_1.security_group_ids
-}
-
-output "security_group_2_id" {
-  value = module.security_group_2.security_group_ids
-}
-
-
-output "global_module_sg" {
-  value = module.security_group_1.global_module_sg
-}
-
-/*
-output "global_module_sg" {
-  value = module.security_group_2.global_global_module_sg[*]
-}
-*/
 
 
