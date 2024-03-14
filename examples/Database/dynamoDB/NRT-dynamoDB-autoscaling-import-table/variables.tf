@@ -19,6 +19,9 @@ variable "stream_view_type" {
   type    = string
 }
 ###################################################
+variable "aws_region" {
+  default = "us-east-1"
+}
 variable "table_hash_key" {
   description = "This will be hash key for dynamoDB table"
   type = string

@@ -4,7 +4,7 @@ node_type                        = "dax.t2.medium"
 replication_factor               = 3
 cluster_endpoint_encryption_type = "TLS"
 cluster_description              = "DAX"
-security_group_ids               = "sg-0a9f8788cc8e7dbaf"
+security_group_ids               = ["sg-0a9f8788cc8e7dbaf"]
 tags = {
   DataClassification : "restricted"
   Environment : "poc"
@@ -18,9 +18,7 @@ tags = {
 
 subnet_group_details = {
   "name"        = "nrtdaxcluster-1",
-  "subnet_id_1" = "subnet-0140e03481c775864"
-  "subnet_id_2" = "subnet-00519af74d280b068"
-  "subnet_id_3" = "subnet-001023c820ce7e35c"
+  "subnet_id" = ["subnet-0140e03481c775864" ,"subnet-00519af74d280b068","subnet-001023c820ce7e35c"]
 }
 
 aws_dax_parameter_group_name     = "nrt-dax-parameter-group"
