@@ -31,7 +31,6 @@ resource "local_file" "tf-key" {
   filename = var.key_name
 }
 
-
 ################################################################################ INSTANCE REGULAR ###########################################
 
 resource "aws_instance" "this" {

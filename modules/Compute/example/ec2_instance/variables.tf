@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 variable "new_key_pair" {
   description = "Whether to create an instance"
   type        = bool
