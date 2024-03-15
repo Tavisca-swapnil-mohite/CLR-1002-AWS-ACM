@@ -11,7 +11,7 @@ validation {
 }
 }
 variable "is_stream_enabled" {
-  description = "This field is to enable dyanmoDB streaming"
+  description = "This field is to enable dyanmoDB streaming. run terrform apply 2 times incase of import from table is true"
   type        = bool
 }
 variable "stream_view_type" {
@@ -54,21 +54,22 @@ variable "attributes" {
 
 }
 variable "gsi_indices" {
+  description = "Map of GSI Index/s in key-value pair, key will be GSI index name"
   type = map(object({
     write_capacity = number
     read_capacity  = number
     range_key      = string
+    hash_key       = string
 
   }))
-
 }
 
 variable "lsi_indices" {
+  description = "Map of LSI Index in key-value pair, key will be LSI index name"
   type = map(object({
     range_key = string
 
   }))
-
 }
 
 
@@ -198,10 +199,18 @@ description = "enter true if you want to import data from another DynamoDB table
 
 variable "bucket_name_to_import_data" {
   type = string
-  description = "while exporting data from source bucket, make sure to select DYNAMODB_JSON and compression type as GZIP"
+  default = "xyz"
+  description = "while exporting data from source bucket, make sure to select DYNAMODB_JSON and compression type as GZIP.set this value only if 'is_data_imported' is true"
 }
 
 variable "import_data_key_prefix" {
   type = string
-  description = "path of .gz file in the S3"
+  default = "xyz"
+  description = "path of .gz file in the S3.set this value only if 'is_data_imported' is true"
+}
+variable "terrform_operation_timeout" {
+  description = "provide a value in minute with 'm' appended if any operation takes more than default 360 minutes"
+  type = string
+  default = "360m"
+
 }

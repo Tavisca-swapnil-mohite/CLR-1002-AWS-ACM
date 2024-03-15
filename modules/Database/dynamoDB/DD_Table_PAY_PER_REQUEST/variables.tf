@@ -2,7 +2,7 @@
 # Optional variable and value is set to default
 
 variable "is_stream_enabled" {
-  description = "This field is to enable dyanmoDB streaming"
+  description = "This field is to enable dyanmoDB streaming. run terrform apply 2 times incase of import from table is true"
   type        = bool
   default     = false
 }
@@ -244,4 +244,11 @@ variable "import_data_key_prefix" {
   description = "path of .gz file in the S3"
   type = string
   default = "abc"
+}
+
+variable "terrform_operation_timeout" {
+  description = "provide a value in minute with 'm' appended if any operation takes more than default 360 minutes"
+  type = string
+  default = "360m"
+
 }

@@ -21,15 +21,16 @@ attributes = {
     "attr5" = { name = "age", type = "N" },
   }
 gsi_indices = {
-    # in key-value pair, key will be GSI hash_key
-    "product_name" = { write_capacity = 60, read_capacity = 60, range_key = "product_id" },
-    "product_desc" = { write_capacity = 60, read_capacity = 60, range_key = "product_id" },
-    "age"          = { write_capacity = 65, read_capacity = 65, range_key = "user_id" },
-    "product_id" = { write_capacity = 60, read_capacity = 60, range_key = "user_id" },
+    # in key-value pair, key will be GSI index name
+    "product_name_gsi" = { write_capacity = 60, read_capacity = 60, range_key = "product_id" ,hash_key = "product_name"},
+    "product_desc_gsi" = { write_capacity = 60, read_capacity = 60, range_key = "product_id",hash_key = "product_desc" },
+    "age_gsi"          = { write_capacity = 65, read_capacity = 65, range_key = "user_id" ,hash_key = "age"},
+    "product_id_gsi" = { write_capacity = 60, read_capacity = 60, range_key = "user_id" ,hash_key = "product_id" },
   }
   lsi_indices = { 
-   "by_age" = {range_key = "age"},
-   "product_id" = {range_key = "product_id"},
+    # in key-value pair, key will be LSI index name
+   "by_age_LSI" = {range_key = "age"},
+   "by_product_id_LSI" = {range_key = "product_id"},
   }
   
   kms_alias = "alias/nrt_encryption_key-import"
@@ -122,9 +123,11 @@ gsi_indices = {
   key_type = "customer_managed"
 }
 
-is_data_imported = false
+is_data_imported = true
 bucket_name_to_import_data = "dynamodb-export-bnr"
 import_data_key_prefix = "AWSDynamoDB/01709576156860-fd8a7a0c/data"
 
 is_stream_enabled = true
 stream_view_type = "NEW_IMAGE"
+
+terrform_operation_timeout = "420m"

@@ -1,5 +1,5 @@
 module "nrt-dynamoDB" {
-    source = "../../modules/dynamoDB/DD_Table_Provisioned"
+    source = "../../../../modules/database/dynamoDB/dd_table_provisioned"
     table_hash_key = var.table_hash_key
     table_name = var.table_name
     table_class = var.table_class
@@ -28,6 +28,7 @@ module "nrt-dynamoDB" {
     import_data_key_prefix = var.import_data_key_prefix
     is_stream_enabled = var.is_stream_enabled
     stream_view_type = var.stream_view_type
+    terrform_operation_timeout = var.terrform_operation_timeout
     
 
     

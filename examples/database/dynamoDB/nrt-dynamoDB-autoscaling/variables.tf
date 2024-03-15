@@ -10,8 +10,7 @@ validation {
   error_message = "ttl attribute name must be between 1 and 255 characters"
 }
 }
-
-#########
+###################################################
 variable "aws_region" {
   default = "us-east-1"
 }
@@ -47,15 +46,18 @@ variable "attributes" {
 
 }
 variable "gsi_indices" {
+  description = "Map of GSI Index/s in key-value pair, key will be GSI index name"
   type = map(object({
     write_capacity = number
     read_capacity  = number
     range_key      = string
+    hash_key       = string
 
   }))
 }
 
 variable "lsi_indices" {
+  description = "Map of LSI Index in key-value pair, key will be LSI index name"
   type = map(object({
     range_key = string
 
@@ -171,4 +173,10 @@ variable "key_policy_map" {
     description = "A valid policy JSON document"
     type = any
  
+}
+variable "terrform_operation_timeout" {
+  description = "provide a value in minute with 'm' appended if any operation takes more than default 360 minutes"
+  type = string
+  default = "360m"
+
 }

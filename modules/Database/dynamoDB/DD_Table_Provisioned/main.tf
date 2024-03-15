@@ -30,7 +30,7 @@ resource "aws_dynamodb_table" "dd_table_provisioned" {
     enabled        = var.ttl_enabled
     attribute_name = var.attribute_for_ttl
   }
-  stream_enabled   = var.is_stream_enabled
+  stream_enabled   = var.is_stream_enabled   # run terrform apply 2 times incase of import from table is true
   stream_view_type = (var.is_stream_enabled == false ? null : var.stream_view_type)
 
   point_in_time_recovery {
@@ -47,7 +47,7 @@ resource "aws_dynamodb_table" "dd_table_provisioned" {
   dynamic "global_secondary_index" {
     for_each = var.gsi_indices
     content {
-      name            = global_secondary_index.value.key
+      name            = global_secondary_index.key
       write_capacity  = global_secondary_index.value.write_capacity
       read_capacity   = global_secondary_index.value.read_capacity
       range_key       = global_secondary_index.value.range_key
@@ -92,7 +92,9 @@ lifecycle {
 }
 
 timeouts {
-  create = "360m"  
+  create = var.terrform_operation_timeout
+  delete = var.terrform_operation_timeout
+  update = var.terrform_operation_timeout
 }
 
   tags = {
