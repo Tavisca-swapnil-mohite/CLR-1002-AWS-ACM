@@ -10,3 +10,4 @@ resource "aws_iam_role" "tf_iam_role" {
   managed_policy_arns = module.managed-policy.policy_arn
   tags = var.role_tags
 }
+

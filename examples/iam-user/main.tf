@@ -29,3 +29,4 @@ resource "aws_iam_user_group_membership" "example1" {
   user = aws_iam_user.tf_iam_user.name
   groups = aws_iam_group_in
 }
+

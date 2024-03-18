@@ -16,6 +16,10 @@ variable "iam_role_in" {
     type = string
     description = "Name of the role to be attached to the policy"
 }
+variable "aws_region_in" {
+    type = string
+    description = "Name of region where infra is to be created"
+}
 
 variable "env_in" {
     type = string

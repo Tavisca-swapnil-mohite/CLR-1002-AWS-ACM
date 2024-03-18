@@ -1,6 +1,6 @@
-variable "policy_name_in" {
-    type = string
-    description = "Name of the policy to be created"
+variable "service_name_in" {
+    type = list(string)
+    description = "Name of the services for which role is to be created"
 }
 
 variable "tags_in" {
@@ -12,9 +12,9 @@ variable "tags_in" {
   }
 }
 
-variable "iam_role_in" {
+variable "aws_region_in" {
     type = string
-    description = "Name of the role to be attached to the policy"
+    description = "Name of region where infra is to be created"
 }
 
 variable "env_in" {
