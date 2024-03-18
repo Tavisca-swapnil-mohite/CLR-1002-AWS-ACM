@@ -90,3 +90,24 @@ variable "enable_vpc_flow_log" {
   description = "need to enable and disable flow logs"
   default = true
 }
+#Rule Number should start from 103
+variable "public_nacl_user" {
+  description = "#example to add custom rules [{from_port : 1024, to_port : 65535,  rule_num : 103, cidr : '0.0.0.0/0'}]"
+  default = []
+}
+variable "app_nacl_user" {
+  description = "#example to add custom rules [{from_port : 1024, to_port : 65535,  rule_num : 103, cidr : '0.0.0.0/0'}]"
+  default = []
+}
+variable "web_nacl_user" {
+  description = "#example to add custom rules [{from_port : 1024, to_port : 65535,  rule_num : 103, cidr : '0.0.0.0/0'}]" 
+  default = []
+}
+variable "data_nacl_user" {
+  description = "#example to add custom rules [{from_port : 1024, to_port : 65535,  rule_num : 103, cidr : '0.0.0.0/0'}]"
+  default = []
+}
+variable "mgmt_nacl_user" {
+  description = "#example to add custom rules [{from_port : 1024, to_port : 65535,  rule_num : 103, cidr : '0.0.0.0/0'}]"
+  default = []
+}

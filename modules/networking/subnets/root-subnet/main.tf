@@ -19,7 +19,7 @@ resource "aws_subnet" "subnets" {
 # create route tables
 ######################
 module "route_tables" {
-  source = "../route-table"
+  source = "../../route-table"
   count = length(var.availability_zones)
   ipv4_routes = var.ipv4_routes
   vpc_id             = var.vpc_id
