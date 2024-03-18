@@ -49,5 +49,19 @@ vpc_name           = "oski-stage"
 vpc_cidr_block     = "175.0.0.0/19"
 availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c", "us-east-1d"]
 region             = "us-east-1"
-#natgw_count        = 2
-secondary_cidr_blocks = ["172.1.0.0/16", "172.2.0.0/16"]
+secondary_cidr_blocks = ["172.1.0.0/16"]
+public_nacl_user = [
+  {from_port : 1024, to_port : 65535,  rule_num : 103, cidr : "0.0.0.0/0"}
+]
+app_nacl_user = [
+  {from_port : 1024, to_port : 65535,  rule_num : 103, cidr : "0.0.0.0/0"}
+]
+web_nacl_user = [
+  {from_port : 1024, to_port : 65535,  rule_num : 103, cidr : "0.0.0.0/0"}
+]
+data_nacl_user = [
+  {from_port : 1024, to_port : 65535,  rule_num : 103, cidr : "0.0.0.0/0"}
+]
+mgmt_nacl_user = [
+  {from_port : 1024, to_port : 65535,  rule_num : 103, cidr : "0.0.0.0/0"}
+]

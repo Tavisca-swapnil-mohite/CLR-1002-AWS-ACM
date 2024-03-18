@@ -113,3 +113,37 @@ module "natgw" {
   depends_on = [ module.public-subnet ]
   subnet_ids = [ module.public-subnet.subnet_ids[0] , module.public-subnet.subnet_ids[1] ]
 }
+
+locals {
+    public_nacl_default= [
+    {from_port : 443, to_port : 443,  rule_num : 100, cidr : "0.0.0.0/0"}
+  ]
+  app_nacl_default = [
+    {from_port : 443, to_port : 443,  rule_num : 100, cidr : var.subnet_variables.web-subnets.cidr_block},
+    {from_port : 0, to_port : 65535,  rule_num : 101, cidr : var.subnet_variables.data-subnets.cidr_block},
+    {from_port : 0, to_port : 65535,  rule_num : 102, cidr : var.subnet_variables.mgmt-subnets.cidr_block}
+  ]
+  web_nacl_default = [
+    {from_port : 443, to_port : 443,  rule_num : 100, cidr : var.subnet_variables.public-subnets.cidr_block}, 
+    {from_port : 443, to_port : 443,  rule_num : 101, cidr : var.subnet_variables.app-subnets.cidr_block}, 
+    {from_port : 0, to_port : 65535,  rule_num : 102, cidr : var.subnet_variables.web-subnets.cidr_block}
+  ]
+  data_nacl_default = [
+    {from_port : 0, to_port : 65535,  rule_num : 100, cidr : var.subnet_variables.app-subnets.cidr_block}
+  ]
+  mgmt_nacl_default = [
+    {from_port : 0, to_port : 65535,  rule_num : 100, cidr : var.subnet_variables.app-subnets.cidr_block}, 
+    {from_port : 0, to_port : 65535,  rule_num : 101, cidr : var.subnet_variables.web-subnets.cidr_block}
+  ]
+}
+module "nacl" {
+  source = "../../../../modules/networking/nacl"
+  depends_on = [ module.app-subnet, module.web-subnet, module.data-subnet, module.public-subnet, module.mgmt-subnet]
+  vpc_id = module.vpc.vpc_id
+  all_layer_subnet_ids = [module.public-subnet.subnet_ids, module.app-subnet.subnet_ids, module.web-subnet.subnet_ids, module.data-subnet.subnet_ids ,module.mgmt-subnet.subnet_ids]
+  public_nacl_map = concat(local.public_nacl_default,var.public_nacl_user)
+  app_nacl_map = concat(local.app_nacl_default,var.app_nacl_user)
+  web_nacl_map = concat(local.web_nacl_default,var.web_nacl_user)
+  data_nacl_map = concat(local.data_nacl_default,var.data_nacl_user)
+  mgmt_nacl_map = concat(local.mgmt_nacl_default,var.mgmt_nacl_user)
+}
