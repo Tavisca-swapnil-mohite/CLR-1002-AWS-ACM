@@ -129,11 +129,7 @@ variable "subnet_id" {
   default     = null
 }
 
-variable "tags" {
-  description = "A mapping of tags to assign to the resource"
-  type        = map(string)
-  default     = {}
-}
+
 
 variable "tenancy" {
   description = "The tenancy of the instance (if the instance is running in a VPC). Available values: default, dedicated, host"
@@ -177,3 +173,16 @@ variable "create_iam_instance_profile" {
 }
 
 
+variable "spot_price" {
+  description = "The maximum price to request on the spot market. Defaults to on-demand price"
+  type        = string
+  default     = null
+}
+
+
+
+variable "spot_type" {
+  description = "If set to one-time, after the instance is terminated, the spot request will be closed. Default `persistent`"
+  type        = string
+  default     = null
+}

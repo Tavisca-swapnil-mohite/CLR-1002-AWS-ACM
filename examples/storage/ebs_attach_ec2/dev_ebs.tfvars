@@ -1,6 +1,6 @@
 
 ebs_availability_zone = "us-east-1c"
-ebs_type = "gp3"
+ebs_type = "gp2"
 ebs_volume_count = 2
 ebs_volume_size_list = ["3","5"]
 device_name_list = ["/dev/xvdf", "/dev/xvdg"]

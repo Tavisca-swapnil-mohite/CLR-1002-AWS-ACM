@@ -1,4 +1,4 @@
-/*
+
 module "ec2_key_pair" {
   source = "../../../modules/compute/ec2_key_pair"
 
@@ -6,9 +6,10 @@ module "ec2_key_pair" {
   existing_key_pair    = var.existing_key_pair
   public_key           = var.public_key
   key_name             = var.key_name
+  tags                 = var.tags
 
 }
-*/
+
 
 module "ec2_spot" {
   source = "../../../modules/compute/ec2_instance_spot_linux"

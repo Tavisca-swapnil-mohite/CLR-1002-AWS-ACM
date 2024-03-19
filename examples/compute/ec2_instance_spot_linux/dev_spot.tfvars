@@ -1,6 +1,6 @@
-//new_key_pair = true
-//existing_key_pair = false
-//key_name = "test_key"
+new_key_pair = true
+existing_key_pair = false
+key_name = "test_key"
 
 
 #instance_count = 3

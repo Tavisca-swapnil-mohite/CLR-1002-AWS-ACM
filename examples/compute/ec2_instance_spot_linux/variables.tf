@@ -1,5 +1,5 @@
 
-/*
+
 variable "new_key_pair" {
   description = "Whether to create an instance"
   type        = bool
@@ -19,7 +19,7 @@ variable "public_key" {
   default     = null
   sensitive   = true
 }
-*/
+
 
 variable "spot_instance_count" {
   description = "spot count"

@@ -9,10 +9,6 @@ variable "iops" {
   type        = string
 }
 
-variable "type" {
-  description = "The type of the EBS volume"
-  type        = string
-} 
 
 
 variable "volume_size" {

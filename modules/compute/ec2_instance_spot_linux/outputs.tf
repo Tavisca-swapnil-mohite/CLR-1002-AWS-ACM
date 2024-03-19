@@ -14,13 +14,6 @@ output "arn" {
   )
 }
 
-output "capacity_reservation_specification" {
-  description = "Capacity reservation specification of the instance"
-  value = try(
-    aws_spot_instance_request.ec2_spot.capacity_reservation_specification,
-    null,
-  )
-}
 
 output "instance_state" {
   description = "The state of the instance"
@@ -82,13 +75,7 @@ output "private_ip" {
   )
 }
 
-output "ipv6_addresses" {
-  description = "The IPv6 address assigned to the instance, if applicable"
-  value = try(
-    aws_spot_instance_request.ec2_spot.ipv6_addresses,
-    [],
-  )
-}
+
 
 output "tags_all" {
   description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
@@ -153,10 +140,3 @@ output "ebs_block_device" {
   )
 }
 
-output "ephemeral_block_device" {
-  description = "Ephemeral block device information"
-  value = try(
-    aws_spot_instance_request.ec2_spot.ephemeral_block_device,
-    null
-  )
-}

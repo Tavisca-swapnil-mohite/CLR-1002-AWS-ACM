@@ -4,7 +4,7 @@ module "ebs_volume" {
 
   count          = var.ebs_volume_count
 
-  type             = var.ebs_type
+ 
   volume_size      = var.ebs_volume_size_list["${count.index}"]
   availability_zone = var.ebs_availability_zone
   snapshot_id      = var.snapshot_id

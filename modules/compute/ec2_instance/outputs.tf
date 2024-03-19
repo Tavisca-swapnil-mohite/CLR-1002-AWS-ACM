@@ -11,14 +11,6 @@ output "arn" {
   )
 }
 
-output "capacity_reservation_specification" {
-  description = "Capacity reservation specification of the instance"
-  value = try(
-    aws_instance.ec2.capacity_reservation_specification,
-
-    null,
-  )
-}
 
 output "instance_state" {
   description = "The state of the instance"
@@ -66,14 +58,6 @@ output "public_dns" {
   )
 }
 
-output "public_ip" {
-  description = "The public IP address assigned to the instance, if applicable. NOTE: If you are using an aws_eip with your instance, you should refer to the EIP's address directly and not use `public_ip` as ec2_spot field will change after the EIP is attached"
-  value = try(
-    aws_instance.ec2.public_ip,
-
-    null,
-  )
-}
 
 output "private_ip" {
   description = "The private IP address assigned to the instance"
@@ -131,11 +115,3 @@ output "ebs_block_device" {
   )
 }
 
-output "ephemeral_block_device" {
-  description = "Ephemeral block device information"
-  value = try(
-    aws_instance.ec2.ephemeral_block_device,
-
-    null
-  )
-}

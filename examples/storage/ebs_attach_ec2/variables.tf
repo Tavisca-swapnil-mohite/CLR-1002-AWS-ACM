@@ -5,11 +5,7 @@ variable "timeouts" {
   default     = {}
 }
 
-variable "ebs_type" {
-  description = "The size of the EBS volume in GiB"
-  type        = string
-  default     = "gp3"
-}
+
 
 variable "ebs_volume_size_list" {
   description = "The size of the EBS volume in GiB"

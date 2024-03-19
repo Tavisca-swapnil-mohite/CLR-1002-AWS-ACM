@@ -2,7 +2,7 @@
 resource "aws_ebs_volume" "ebs_volume" {
 
   availability_zone = var.availability_zone
-  type              = var.type
+  type              = local.ebs_type
   size              = var.volume_size
   iops              = var.iops
   encrypted         = var.encrypted

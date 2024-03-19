@@ -29,17 +29,6 @@ variable "availability_zone" {
   default     = null
 }
 
-variable "capacity_reservation_specification" {
-  description = "Describes an instance's Capacity Reservation targeting option"
-  type        = any
-  default     = {}
-}
-
-variable "cpu_credits" {
-  description = "The credit option for CPU usage (unlimited or standard)"
-  type        = string
-  default     = null
-}
 
 variable "disable_api_termination" {
   description = "If true, enables EC2 Instance Termination Protection"
@@ -59,28 +48,10 @@ variable "ebs_optimized" {
   default     = null
 }
 
-variable "enclave_options_enabled" {
-  description = "Whether Nitro Enclaves will be enabled on the instance. Defaults to `false`"
-  type        = bool
-  default     = null
-}
-
 variable "ephemeral_block_device" {
   description = "Customize Ephemeral (also known as Instance Store) volumes on the instance"
   type        = list(map(string))
   default     = []
-}
-
-variable "hibernation" {
-  description = "If true, the launched EC2 instance will support hibernation"
-  type        = bool
-  default     = null
-}
-
-variable "host_id" {
-  description = "ID of a dedicated host that the instance will be assigned to. Use when an instance is to be launched on a specific dedicated host"
-  type        = string
-  default     = null
 }
 
 variable "iam_instance_profile" {
@@ -113,11 +84,6 @@ variable "key_name" {
   default     = null
 }
 
-variable "launch_template" {
-  description = "Specifies a Launch Template to configure the instance. Parameters configured on this resource will override the corresponding parameters in the Launch Template"
-  type        = map(string)
-  default     = {}
-}
 
 variable "metadata_options" {
   description = "Customize the metadata options of the instance"
@@ -147,11 +113,6 @@ variable "private_dns_name_options" {
   default     = {}
 }
 
-variable "placement_group" {
-  description = "The Placement Group to start the instance in"
-  type        = string
-  default     = null
-}
 
 
 
@@ -181,11 +142,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "tenancy" {
-  description = "The tenancy of the instance (if the instance is running in a VPC). Available values: default, dedicated, host"
-  type        = string
-  default     = null
-}
 
 variable "user_data" {
   description = "The user data to provide when launching the instance. Do not pass gzip-compressed data via this argument; see user_data_base64 instead"
@@ -229,23 +185,6 @@ variable "timeouts" {
   default     = {}
 }
 
-variable "cpu_options" {
-  description = "Defines CPU options to apply to the instance at launch time."
-  type        = any
-  default     = {}
-}
-
-variable "cpu_core_count" {
-  description = "Sets the number of CPU cores for an instance" # This option is only supported on creation of instance type that support CPU Options https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html#cpu-options-supported-instances-values
-  type        = number
-  default     = null
-}
-
-variable "cpu_threads_per_core" {
-  description = "Sets the number of CPU threads per core for an instance (has no effect unless cpu_core_count is also set)"
-  type        = number
-  default     = null
-}
 
 
 variable "disable_api_stop" {
