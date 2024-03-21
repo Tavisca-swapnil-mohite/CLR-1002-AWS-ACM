@@ -12,6 +12,7 @@ data "aws_route53_zone" "this" {
 
 # Find a certificate that is issued
 data "aws_acm_certificate" "issued" {
+  provider = aws.acm
   domain   = var.domain_name
   statuses = ["ISSUED"]
 }
