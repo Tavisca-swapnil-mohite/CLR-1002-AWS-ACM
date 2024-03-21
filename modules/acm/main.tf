@@ -11,6 +11,7 @@ data "aws_route53_zone" "this" {
 }
 
 resource "aws_acm_certificate" "this" {
+  provider                  = aws.acm
   domain_name               = var.domain_name
   subject_alternative_names = var.subject_alternative_names
   validation_method         = var.validation_method
@@ -42,6 +43,7 @@ resource "aws_route53_record" "validation" {
 
 resource "aws_acm_certificate_validation" "this" {
   count                   = var.validation_method == "DNS" && var.validate_certificate ? 1 : 0
+  provider                = aws.acm
   certificate_arn         = aws_acm_certificate.this.arn
   validation_record_fqdns = aws_route53_record.validation.*.fqdn
 }
