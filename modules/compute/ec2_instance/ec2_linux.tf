@@ -44,7 +44,7 @@ resource "aws_instance" "ec2" {
     content {
       delete_on_termination = try(ebs_block_device.value.delete_on_termination, null)
       device_name           = ebs_block_device.value.device_name
-       encrypted            = true
+      encrypted            = true
       iops                  = try(ebs_block_device.value.iops, null)
       kms_key_id            = lookup(ebs_block_device.value, "kms_key_id", data.aws_kms_key.current.arn)
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
