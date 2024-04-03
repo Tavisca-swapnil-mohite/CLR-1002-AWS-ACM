@@ -1,5 +1,5 @@
 module "alb" {
-  source                           = "./alb"
+  source                           = "../../../../modules/compute/load_balancing/alb"
   infraOwner                       = var.infraOwner
   dataClassification               = var.dataClassification
   environment                      = var.environment
@@ -16,7 +16,7 @@ module "alb" {
 }
 
 module "listener" {
-  source              = "./listener"
+  source              = "../../../../modules/compute/load_balancing/listener"
   listener_port       = var.listener_port
   listener_protocol   = var.listener_protocol
   default_action_type = var.default_action_type
@@ -25,7 +25,7 @@ module "listener" {
 }
 
 module "target_group" {
-  source                           = "./target_group"
+  source                           = "../../../../modules/compute/load_balancing/target_group"
   target_group_name                = var.target_group_name
   target_group_port                = var.target_group_port
   target_group_protocol            = var.target_group_protocol
