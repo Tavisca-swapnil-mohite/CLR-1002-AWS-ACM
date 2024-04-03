@@ -1,18 +1,6 @@
 
 
-variable "default_kms_key" {
-  description = "enable custom key"
-  type        = bool
-  default     = false
-}
-
-variable "custom_kms_key" {
-  description = "enable custom key"
-  type        = bool
-  default     = false
-}
 variable "enable_key_rotation" {
-
   type        = bool
   default     = false
 }
@@ -40,7 +28,7 @@ variable "ebs_type" {
 variable "volume_size" {
   description = "The size of the EBS volume in GiB"
   type        = number
-  default     = 5
+  default     = null
 }
 
 variable "availability_zone" {
@@ -50,11 +38,14 @@ variable "availability_zone" {
 }
 
 
+variable "custom_kms_key_id" {
+  type        = string
+  default     = ""
+}
 
 variable "kms_key_id" {
-
   type        = string
-  default     = "arn:aws:kms:us-east-1:796936741154:key/bbb032cb-ce86-404f-b2ee-1c232812a489"
+  default     = ""
 }
 
 

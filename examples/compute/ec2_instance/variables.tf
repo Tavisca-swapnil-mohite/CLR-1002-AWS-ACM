@@ -1,4 +1,7 @@
-
+variable "kms_key_id" {
+type = string
+default = null
+}
 variable "instance_count" {
   description = "number of instances"
   type        = number
@@ -67,7 +70,7 @@ variable "disable_api_termination" {
 
 variable "ebs_block_device" {
   description = "Additional EBS block devices to attach to the instance"
-  type        = list(any)
+  type        = list(map(any))
   default     = []
 }
 

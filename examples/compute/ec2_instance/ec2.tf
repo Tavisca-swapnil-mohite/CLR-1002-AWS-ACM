@@ -26,6 +26,7 @@ module "ec2_instance" {
   vpc_security_group_ids = var.vpc_security_group_ids
   key_name             = var.key_name
 
+
   iam_instance_profile = var.iam_instance_profile
 
   disable_api_termination              = var.disable_api_termination

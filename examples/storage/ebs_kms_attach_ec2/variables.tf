@@ -1,10 +1,10 @@
 
+
 variable "timeouts" {
   description = "Define maximum timeout for creating, updating, and deleting EC2 instance resources"
   type        = map(string)
   default     = {}
 }
-
 
 variable "ebs_volume_size_list" {
   description = "The size of the EBS volume in GiB"
@@ -30,31 +30,16 @@ variable "ebs_volume_count" {
   default     = null
 }
 
-
 variable "tags" {
   description = "The tags of the EBS volume"
   type        = map(string)
   default     = {}
 } 
 
-
 variable "ebs_availability_zone" {
   description = "The availability zone in which to create the EBS volume"
   type        = string
   default     = null
-}
-
-
-variable "custom_kms_key" {
-  description = "custom kms key enable or disable"
-  type        = bool
-  default     = false
-}
-
-variable "default_kms_key" {
-  description = "custom kms key enable or disable"
-  type        = bool
-  default     = false
 }
 
 variable "final_snapshot" {
@@ -75,16 +60,19 @@ variable "multi_attach_enabled" {
   default     = false
 }
 
-
 variable "iops" {
   description = "ebs iops"
   type        = string
   default     = "3000"
 }
-/*
+
 variable "kms_key_id" {
+  type        = string
+  default     = ""
+}
+
+variable "custom_kms_key_id" {
   description = "ebs kms id"
   type        = string
   default     = ""
 }
-*/

@@ -1,3 +1,11 @@
+data "aws_ebs_default_kms_key" "current" {
+}
+
+data "aws_kms_key" "current" {
+  key_id = data.aws_ebs_default_kms_key.current.key_arn
+}
+
+
 resource "aws_instance" "ec2" {
 
   ami                  = var.ami
@@ -22,7 +30,7 @@ resource "aws_instance" "ec2" {
       delete_on_termination = try(root_block_device.value.delete_on_termination, null)
       encrypted             = try(root_block_device.value.encrypted, null)
       iops                  = try(root_block_device.value.iops, null)
-      kms_key_id            = lookup(root_block_device.value, "kms_key_id", null)
+      kms_key_id            = lookup(root_block_device.value, "kms_key_id", data.aws_kms_key.current.arn)
       volume_size           = try(root_block_device.value.volume_size, null)
       volume_type           = try(root_block_device.value.volume_type, null)
       throughput            = try(root_block_device.value.throughput, null)
@@ -36,12 +44,12 @@ resource "aws_instance" "ec2" {
     content {
       delete_on_termination = try(ebs_block_device.value.delete_on_termination, null)
       device_name           = ebs_block_device.value.device_name
-      encrypted             = try(ebs_block_device.value.encrypted, null)
+       encrypted            = true
       iops                  = try(ebs_block_device.value.iops, null)
-      kms_key_id            = lookup(ebs_block_device.value, "kms_key_id", null)
+      kms_key_id            = lookup(ebs_block_device.value, "kms_key_id", data.aws_kms_key.current.arn)
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
       volume_size           = try(ebs_block_device.value.volume_size, null)
-      volume_type           = try(ebs_block_device.value.volume_type, null)
+      volume_type           = "gp3"
       throughput            = try(ebs_block_device.value.throughput, null)
       tags                  = try(ebs_block_device.value.tags, null)
     }

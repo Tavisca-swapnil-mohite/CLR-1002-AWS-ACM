@@ -1,22 +1,21 @@
-/*
-data "aws_ebs_default_kms_key" "current1" {
+
+data "aws_ebs_default_kms_key" "current" {
 }
 
 data "aws_kms_key" "current" {
-  key_id = data.aws_ebs_default_kms_key.current1.key_arn
+  key_id = data.aws_ebs_default_kms_key.current.key_arn
 }
-*/
+
 
 resource "aws_ebs_volume" "ebs_volume" {
-  count = var.default_kms_key ? 1 : 0
 
   availability_zone = var.availability_zone
   type              = local.ebs_type
   size              = var.volume_size
   iops              = var.iops
   encrypted         = local.ebs_encrypted
- #kms_key_id       = data.aws_kms_key.current.arn
-  kms_key_id        = var.kms_key_id
+  #
+  kms_key_id = var.custom_kms_key_id != "" ? var.custom_kms_key_id : data.aws_kms_key.current.arn
   snapshot_id       = var.snapshot_id
   final_snapshot    = var.final_snapshot
   multi_attach_enabled  = var.multi_attach_enabled
@@ -25,9 +24,8 @@ resource "aws_ebs_volume" "ebs_volume" {
 
 
 resource "aws_volume_attachment" "ebs_attachment" {
-  count = var.default_kms_key ? 1 : 0
 
-  volume_id= aws_ebs_volume.ebs_volume[0].id
+  volume_id= aws_ebs_volume.ebs_volume.id
   device_name= var.device_name
   instance_id= var.instance_id
 
