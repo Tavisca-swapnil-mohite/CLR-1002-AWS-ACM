@@ -14,7 +14,7 @@ resource "aws_ebs_volume" "ebs_volume" {
   size              = var.volume_size
   iops              = var.iops
   encrypted         = local.ebs_encrypted
-  #
+  #below line indicates if nothing mentioned, it will take default kms mentioned above datablock
   kms_key_id = var.custom_kms_key_id != "" ? var.custom_kms_key_id : data.aws_kms_key.current.arn
   snapshot_id       = var.snapshot_id
   final_snapshot    = var.final_snapshot
