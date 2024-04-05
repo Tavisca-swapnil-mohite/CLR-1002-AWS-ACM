@@ -1,3 +1,11 @@
+variable "aws_region" {
+  default = "us-east-1"
+}
+########################################################################################################
+##                                                                                                    ##
+##                     KMS module related variables                                                   ##
+##                                                                                                    ##
+########################################################################################################
 variable "kms_alias" {
     description = "define in the form of 'alias/unique_key_name'"
     type = string
@@ -20,7 +28,7 @@ variable "need_kms_replica" {
   default = false
 }
 variable "replica_region" {
-  description = "dr region for kms key replica "
+  description = "dr region for kms key replica. "
   type = string
   default = null
 }
@@ -29,7 +37,7 @@ variable "replica_key_policy" {
     type = any
     default = null
 }
-variable "kms_tags" {
+variable "tags" {
   type = object({
     DataClassification = string
     Environment        = string
