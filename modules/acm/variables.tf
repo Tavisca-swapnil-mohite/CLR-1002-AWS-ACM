@@ -45,3 +45,10 @@ variable "allow_overwrite_records" {
   type        = bool
   default     = true
 }
+
+variable "private_zone" {
+  description = "Whether the given hosted zone name is a private or public zone, true represents private. The default is false."
+  type        = bool
+  default     = false
+}
+

@@ -1,27 +1,9 @@
 module acm {
   source  = "../../modules/acm"
-  domain_name = "wwwpoc.net"
-  zone_id     = "Z04304331OGX97SQM2XED"
+  domain_name = var.domain_name
 
-  validation_method = "DNS"
+  subject_alternative_names = var.subject_alternative_names
 
-  subject_alternative_names = [
-      "*.wwwpoc.net",
-      "test.wwwpoc.net"
-  ]
-
-  tags = {
-    Name               = "test-acm-sre"
-    Example            = "complete"
-    AppName            = "test-acm"
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = "IaaC module for Provisioning"
-    Product            = "sre"
-
-  }
+  tags = var.tags
 }
 

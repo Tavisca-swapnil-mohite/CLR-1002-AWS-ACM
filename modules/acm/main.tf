@@ -7,7 +7,7 @@ locals {
 data "aws_route53_zone" "this" {
   #provider     = aws.network
   name         = var.domain_name
-  private_zone = false
+  private_zone = var.private_zone
 }
 
 resource "aws_acm_certificate" "this" {
