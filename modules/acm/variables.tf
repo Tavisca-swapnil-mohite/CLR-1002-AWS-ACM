@@ -10,12 +10,6 @@ variable "subject_alternative_names" {
   default     = []
 }
 
-variable "validation_method" {
-  description = "Which method to use for validation. DNS or EMAIL are valid, NONE can be used for certificates that were imported into ACM and then into Terraform."
-  type        = string
-  default     = "DNS"
-}
-
 variable "zone_id" {
   description = "The ID of the hosted zone to contain this record."
   type        = string
