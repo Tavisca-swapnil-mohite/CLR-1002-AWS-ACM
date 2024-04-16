@@ -1,4 +1,4 @@
-module "opensearch" {
+module "opensearch_based_elasticsearch" {
   source                   = "../../../modules/database/opensearch"
   open_search_domain_name =  var.open_search_domain_name
   open_search_engine_version = var.open_search_engine_version
