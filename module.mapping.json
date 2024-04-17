@@ -1,0 +1,20 @@
+{
+    "sqs_fifo": "compute/sqs/sqs_fifo",
+    "sqs_standard": "compute/sqs/sqs_standard",
+    "sqs_standard_cmk_dlq": "compute/sqs/sqs_standard_cmk_dlq",
+    "sqs_with_dlq_policy": "compute/sqs/sqs_with_dlq_policy",
+
+    "nrt-dax": "database/dynamodb/nrt-dax",
+    "nrt-dynamodb-autoscaling": "database/dynamodb/nrt-dynamodb-autoscaling",
+    "nrt-dynamodb-autoscaling-import-table_stream_enabled": "database/dynamodb/nrt-dynamodb-autoscaling-import-table_stream_enabled",
+
+    "iam-inline-policy": "security/iam/iam-inline-policy",
+    "iam-managed-policy": "security/iam/iam-managed-policy",
+    "iam-role": "security/iam/iam-role",
+    "iam-service-role": "security/iam/iam-service-role",
+    "iam-user": "security/iam/iam-user",
+
+    "s3": "for-testing/s3",
+    "sqs": "for-testing/sqs",
+    "iam-policy": "for-testing/iam-policy"
+}

@@ -1,0 +1,7 @@
+cluster_name            = "eks-travel-qa-poc27-admin"
+aws_region              = "us-east-1"
+helm_chart_name         = "cluster-autoscaler"
+helm_chart_release_name = "cluster-autoscaler"
+helm_chart_repo         = "https://kubernetes.github.io/autoscaler"
+helm_chart_version      = "9.26.0"
+namespace               = "utilities"
