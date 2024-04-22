@@ -1,6 +1,6 @@
 ###### Creating KMS key using existing module ######
 module "kms_key_for_eks_cluster" {
-  source            = "../../security/kms"
+  source            = "../../../security/kms"
   kms_alias         = var.kmskeyid
   delete_after_days = var.kms_delete_after_days
   key_description   = "Key for eks ${var.kmskeyid} cluster"
