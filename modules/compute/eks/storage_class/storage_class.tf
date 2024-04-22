@@ -33,4 +33,7 @@ resource "local_file" "gp3encrypt_kms_file_json" {
 ###### Create storage class ######
 resource "kubernetes_manifest" "storage_class" {
   manifest  = jsondecode(file("${path.module}/gp3encrypt_kms_file.json"))
+  depends_on = [
+    local_file.gp3encrypt_kms_file_json
+  ]
 }
