@@ -29,7 +29,4 @@ module "nrt-dynamoDB" {
     is_stream_enabled = var.is_stream_enabled
     stream_view_type = var.stream_view_type
     terrform_operation_timeout = var.terrform_operation_timeout
-    
-
-    
 }

@@ -125,5 +125,3 @@ variable "bucket_policy" {
 
 
 
-
-
