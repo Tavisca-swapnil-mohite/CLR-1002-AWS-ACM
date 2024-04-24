@@ -1,11 +1,11 @@
 ###### Creating KMS key using existing module ######
 module "kms_key_for_eks_cluster" {
-  source            = "../../../security/kms"
-  kms_alias         = var.kmskeyid
-  delete_after_days = var.kms_delete_after_days
-  key_description   = "Key for eks ${var.kmskeyid} cluster"
-  key_policy_map    = var.key_policy_map
-  kms_tags          = var.tags
+  source                = "../../../security/kms"
+  kms_alias             = var.kms_alias
+  delete_after_days     = var.delete_after_days
+  key_description       = var.key_description
+  key_policy_statements = var.key_policy_statements
+  tags              = var.tags
 }
 
 ###### Creating storage class manifest file ######

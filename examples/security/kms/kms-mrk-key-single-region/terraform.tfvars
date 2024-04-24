@@ -1,6 +1,8 @@
-delete_after_days = 30
-key_description = "Key for kms"
-kms_alias = "alias/eks-ebs-encrypt-key"
+#### key is mrk and but not replicated in any other region
+
+kms_alias = "alias/iac_encryption_key_kms_mrk_key_not_replicated"
+delete_after_days = 8
+key_description = "key_for_kms"
 key_policy_statements = {
   "statement1" = { 
     sid = "Enable IAM User Permissions",
@@ -51,13 +53,14 @@ key_policy_statements = {
                   },
   }
 }
+
 tags = {
-    AppName            = "eks-travel-stage-ns-issue-replica"
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = "eks-travel-stage-ns-issue-replica"
-    Product            = "plt"
+  DataClassification : "restricted"
+  Environment : "poc"
+  AppName : "tf-iac-kms-key-not-replicated"
+  InfraOwner : "sre-cloud-reliability@tavisca.com"
+  BusinessUnit : "travel.app"
+  Backup : "no"
+  Product : "poap"
+  Name : "tf-iac-kms-key-not-replicated"
 }
