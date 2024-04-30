@@ -71,7 +71,7 @@ variable "deployment_minimum_healthy_percent" {
 variable "desired_count" {
   description = "Number of instances of the task definition to place and keep running"
   type        = number
-  default     = 3
+  default     = 1
 }
 
 variable "enable_ecs_managed_tags" {
