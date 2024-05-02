@@ -5,8 +5,8 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  region = "eu-west-1"
-  name   = "ex-${basename(path.cwd)}"
+  region = "us-east-1"
+  name   = "ecs-ec2"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -15,10 +15,17 @@ locals {
   container_port = 80
 
   tags = {
-    Name       = local.name
+    AppName            = local.name
     Example    = local.name
+    Backup             = "no"
+    BusinessUnit       = "travel.poc"
+    DataClassification = "internal"
+    Environment        = "poc"
+    InfraOwner         = "sre-cloud-reliability@tavisca.com"
+    Name               = local.name
+    Product            = "plt"
     Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
+}
 }
 
 ################################################################################
