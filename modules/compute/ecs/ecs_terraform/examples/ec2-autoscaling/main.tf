@@ -6,7 +6,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   region = "us-east-1"
-  name   = "ecs-ec2"
+  name   = "poap-ecs-ec2"
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -15,7 +15,7 @@ locals {
   container_port = 80
 
   tags = {
-    AppName            = local.name
+    AppName            = "IaC"
     Example    = local.name
     Backup             = "no"
     BusinessUnit       = "travel.poc"
@@ -23,7 +23,7 @@ locals {
     Environment        = "poc"
     InfraOwner         = "sre-cloud-reliability@tavisca.com"
     Name               = local.name
-    Product            = "plt"
+    Product            = "poap"
     Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
 }
 }
