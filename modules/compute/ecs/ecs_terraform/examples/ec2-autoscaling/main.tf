@@ -16,7 +16,7 @@ locals {
 
   tags = {
     AppName            = "IaC"
-    Example    = local.name
+    Example            = local.name
     Backup             = "no"
     BusinessUnit       = "travel.poc"
     DataClassification = "internal"
@@ -24,8 +24,8 @@ locals {
     InfraOwner         = "sre-cloud-reliability@tavisca.com"
     Name               = local.name
     Product            = "poap"
-    Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-}
+    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
+  }
 }
 
 ################################################################################
@@ -315,6 +315,37 @@ module "autoscaling" {
     AmazonSSMManagedInstanceCore        = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 
+  tag_specifications = [
+    {
+      resource_type = "instance"
+      tags = { 
+        AppName = "IaC"
+        Example            = local.name
+        Backup             = "no"
+        BusinessUnit       = "travel.poc"
+        DataClassification = "internal"
+        Environment        = "poc"
+        InfraOwner         = "sre-cloud-reliability@tavisca.com"
+        Name               = local.name
+        Product            = "poap"
+        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+    },
+    {
+      resource_type = "volume"
+      tags = { 
+        AppName = "IaC"
+        Example            = local.name
+        Backup             = "no"
+        BusinessUnit       = "travel.poc"
+        DataClassification = "internal"
+        Environment        = "poc"
+        InfraOwner         = "sre-cloud-reliability@tavisca.com"
+        Name               = local.name
+        Product            = "poap"
+        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+    }
+  ]
+
   vpc_zone_identifier = module.vpc.private_subnets
   health_check_type   = "EC2"
   min_size            = 1
@@ -323,7 +354,17 @@ module "autoscaling" {
 
   # https://github.com/hashicorp/terraform-provider-aws/issues/12582
   autoscaling_group_tags = {
-    AmazonECSManaged = true
+    AmazonECSManaged   = true
+    AppName            = "IaC"
+    Example            = local.name
+    Backup             = "no"
+    BusinessUnit       = "travel.poc"
+    DataClassification = "internal"
+    Environment        = "poc"
+    InfraOwner         = "sre-cloud-reliability@tavisca.com"
+    Name               = local.name
+    Product            = "poap"
+    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
   }
 
   # Required for  managed_termination_protection = "ENABLED"
