@@ -255,7 +255,7 @@ module "autoscaling" {
   image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = each.value.instance_type
 
-  security_groups                 = ["sg-0a0c62f544cbbb21d"]
+  security_groups                 = module.alb.security_group_id
   user_data                       = base64encode(each.value.user_data)
   ignore_desired_capacity_changes = true
 
