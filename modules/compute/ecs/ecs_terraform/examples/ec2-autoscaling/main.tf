@@ -312,7 +312,7 @@ module "autoscaling" {
     }
   ]
 
-  vpc_zone_identifier = ["subnet-01d4d19deaa34db85", "subnet-061e332b24aecd27b", "subnet-060048463710e54c4"]
+  vpc_zone_identifier = module.vpc.private_subnets
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
