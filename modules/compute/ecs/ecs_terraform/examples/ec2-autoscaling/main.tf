@@ -90,7 +90,7 @@ module "ecs_service" {
   # Container definition(s)
   container_definitions = {
     (local.container_name) = {
-      image = "public.ecr.aws/ecs-sample-image/amazon-ecs-sample:latest"
+      image = "public.ecr.aws/f9n5f1l7/dgs:latest"
       port_mappings = [
         {
           name          = local.container_name
@@ -127,6 +127,7 @@ module "ecs_service" {
       target_group_arn = module.alb.target_groups["ex_ecs"].arn
       container_name   = local.container_name
       container_port   = local.container_port
+      hostPort         = 80
     }
   }
 
