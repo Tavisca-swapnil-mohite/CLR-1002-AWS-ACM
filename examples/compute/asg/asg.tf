@@ -38,6 +38,7 @@ module "autoscaling" {
     ex_1 = {
       instance_type              = "t3.medium"
       use_mixed_instances_policy = false
+      update_default_version      = true
       mixed_instances_policy     = {}
       user_data                  = <<-EOT
         #!/bin/bash
@@ -51,6 +52,7 @@ module "autoscaling" {
       EOT
     }
   }
+
 
   name = "${local.name}-${each.key}"
 
@@ -141,7 +143,7 @@ module "autoscaling" {
   # Spot instances
   use_mixed_instances_policy = each.value.use_mixed_instances_policy
   mixed_instances_policy     = each.value.mixed_instances_policy
-
+  update_default_version = each.value.update_default_version
   tags = local.tags
 }
 

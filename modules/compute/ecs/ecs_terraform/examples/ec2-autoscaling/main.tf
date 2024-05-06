@@ -42,9 +42,8 @@ module "ecs_cluster" {
   autoscaling_capacity_providers = {
     # On-demand instances
     ex_1 = {
-      auto_scaling_group_arn         = "arn:aws:autoscaling:us-east-1:928814396842:autoScalingGroup:0ffa1aa9-cffd-442d-b0af-76bb19cc1da4:autoScalingGroupName/grafana-sso-poc-ASG-FIt7svpdVImC"
+      auto_scaling_group_arn         = module.autoscaling["ex_1"].autoscaling_group_arn
       managed_termination_protection = "ENABLED"
-
       managed_scaling = {
         maximum_scaling_step_size = 5
         minimum_scaling_step_size = 1
@@ -57,22 +56,6 @@ module "ecs_cluster" {
         base   = 20
       }
     }
-    # Spot instances
-    # ex_2 = {
-    #   auto_scaling_group_arn         = module.autoscaling["ex_2"].autoscaling_group_arn
-    #   managed_termination_protection = "ENABLED"
-
-    #   managed_scaling = {
-    #     maximum_scaling_step_size = 15
-    #     minimum_scaling_step_size = 5
-    #     status                    = "ENABLED"
-    #     target_capacity           = 90
-    #   }
-
-    #   default_capacity_provider_strategy = {
-    #     weight = 40
-    #   }
-    # }
   }
 
   tags = local.tags
@@ -168,7 +151,7 @@ module "ecs_service" {
 
 # https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html#ecs-optimized-ami-linux
 data "aws_ssm_parameter" "ecs_optimized_ami" {
-  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
+  name = "Golden-AMI-ECS-Amazon2"
 }
 
 module "alb" {
@@ -248,8 +231,9 @@ module "autoscaling" {
   for_each = {
     # On-demand instances
     ex_1 = {
-      instance_type              = "t3.large"
+      instance_type              = "t3.medium"
       use_mixed_instances_policy = false
+      update_default_version      = true
       mixed_instances_policy     = {}
       user_data                  = <<-EOT
         #!/bin/bash
@@ -262,48 +246,15 @@ module "autoscaling" {
         EOF
       EOT
     }
-    # Spot instances
-    # ex_2 = {
-    #   instance_type              = "t3.medium"
-    #   use_mixed_instances_policy = true
-    #   mixed_instances_policy = {
-    #     instances_distribution = {
-    #       on_demand_base_capacity                  = 0
-    #       on_demand_percentage_above_base_capacity = 0
-    #       spot_allocation_strategy                 = "price-capacity-optimized"
-    #     }
-
-    #     override = [
-    #       {
-    #         instance_type     = "m4.large"
-    #         weighted_capacity = "2"
-    #       },
-    #       {
-    #         instance_type     = "t3.large"
-    #         weighted_capacity = "1"
-    #       },
-    #     ]
-    #   }
-    #   user_data = <<-EOT
-    #     #!/bin/bash
-
-    #     cat <<'EOF' >> /etc/ecs/ecs.config
-    #     ECS_CLUSTER=${local.name}
-    #     ECS_LOGLEVEL=debug
-    #     ECS_CONTAINER_INSTANCE_TAGS=${jsonencode(local.tags)}
-    #     ECS_ENABLE_TASK_IAM_ROLE=true
-    #     ECS_ENABLE_SPOT_INSTANCE_DRAINING=true
-    #     EOF
-    #   EOT
-    # }
   }
+
 
   name = "${local.name}-${each.key}"
 
-  image_id      = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
+  image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = each.value.instance_type
 
-  security_groups                 = [module.autoscaling_sg.security_group_id]
+  security_groups                 = ["sg-0a0c62f544cbbb21d"]
   user_data                       = base64encode(each.value.user_data)
   ignore_desired_capacity_changes = true
 
@@ -343,14 +294,28 @@ module "autoscaling" {
         Name               = local.name
         Product            = "poap"
         Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+    },
+    {
+      resource_type = "network-interface"
+      tags = { 
+        AppName = "IaC"
+        Example            = local.name
+        Backup             = "no"
+        BusinessUnit       = "travel.poc"
+        DataClassification = "internal"
+        Environment        = "poc"
+        InfraOwner         = "sre-cloud-reliability@tavisca.com"
+        Name               = local.name
+        Product            = "poap"
+        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
     }
   ]
 
-  vpc_zone_identifier = module.vpc.private_subnets
+  vpc_zone_identifier = ["subnet-01d4d19deaa34db85", "subnet-061e332b24aecd27b", "subnet-060048463710e54c4"]
   health_check_type   = "EC2"
   min_size            = 1
-  max_size            = 5
-  desired_capacity    = 2
+  max_size            = 1
+  desired_capacity    = 1
 
   # https://github.com/hashicorp/terraform-provider-aws/issues/12582
   autoscaling_group_tags = {
@@ -373,7 +338,7 @@ module "autoscaling" {
   # Spot instances
   use_mixed_instances_policy = each.value.use_mixed_instances_policy
   mixed_instances_policy     = each.value.mixed_instances_policy
-
+  update_default_version = each.value.update_default_version
   tags = local.tags
 }
 
