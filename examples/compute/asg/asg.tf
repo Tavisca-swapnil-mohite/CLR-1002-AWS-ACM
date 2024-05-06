@@ -54,7 +54,7 @@ module "autoscaling" {
 
   name = "${local.name}-${each.key}"
 
-  image_id      = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
+  image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = each.value.instance_type
 
   security_groups                 = ["sg-0a0c62f544cbbb21d"]
