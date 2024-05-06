@@ -1,4 +1,8 @@
+data "aws_availability_zones" "available" {}
 
+data "aws_ssm_parameter" "ecs_optimized_ami" {
+  name = "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended"
+}
 
 locals {
   region = "us-east-1"
@@ -53,7 +57,7 @@ module "autoscaling" {
   image_id      = jsondecode(data.aws_ssm_parameter.ecs_optimized_ami.value)["image_id"]
   instance_type = each.value.instance_type
 
-  security_groups                 = [module.autoscaling_sg.security_group_id]
+  security_groups                 = ["sg-0a0c62f544cbbb21d"]
   user_data                       = base64encode(each.value.user_data)
   ignore_desired_capacity_changes = true
 
