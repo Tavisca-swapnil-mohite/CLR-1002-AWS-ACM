@@ -90,7 +90,7 @@ module "ecs_service" {
   # Container definition(s)
   container_definitions = {
     (local.container_name) = {
-      image = "public.ecr.aws/f9n5f1l7/dgs:latest"
+      image = "nginx:latest"
       port_mappings = [
         {
           name          = local.container_name
