@@ -129,6 +129,7 @@ module "ecs_service" {
       hostPort         = 80
     }
   }
+  memory = 1048
 
   subnet_ids = module.vpc.private_subnets
   security_group_rules = {
