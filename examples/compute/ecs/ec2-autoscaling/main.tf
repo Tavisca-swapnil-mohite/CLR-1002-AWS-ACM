@@ -11,7 +11,7 @@ locals {
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
 
-  container_name = "ecs-sample"
+  container_name = "ecs-sample-v1"
   container_port = 80
 
   tags = {
