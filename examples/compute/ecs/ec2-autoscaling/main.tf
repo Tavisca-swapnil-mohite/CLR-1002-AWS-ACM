@@ -129,7 +129,7 @@ module "ecs_service" {
       hostPort         = 80
     }
   }
-  memory = 512
+  #memory = 512
 
   subnet_ids = module.vpc.private_subnets
   security_group_rules = {
@@ -232,7 +232,7 @@ module "autoscaling" {
   for_each = {
     # On-demand instances
     ex_1 = {
-      instance_type              = "t3.medium"
+      instance_type              = "t3.large"
       use_mixed_instances_policy = false
       update_default_version      = true
       mixed_instances_policy     = {}
