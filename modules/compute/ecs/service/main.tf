@@ -387,7 +387,7 @@ resource "aws_ecs_service" "ignore_task_definition" {
     delete = try(var.timeouts.delete, null)
   }
 
-  depends_on = [aws_iam_role_policy_attachment.service]
+  depends_on = [aws_iam_role_policy_attachment.service,aws_iam_policy.service]
 
   lifecycle {
     ignore_changes = [
