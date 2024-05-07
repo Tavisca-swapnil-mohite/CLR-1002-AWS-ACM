@@ -130,7 +130,7 @@ module "ecs_service" {
     }
   }
 
-  subnet_ids = ["subnet-06dfc6f1edb0323aa","subnet-021c48594b3278c0b","subnet-0870e9b55b51ee01d","subnet-0570e042f6f3c0553"]
+  subnet_ids = module.vpc.private_subnets
   security_group_rules = {
     alb_http_ingress = {
       type                     = "ingress"
@@ -162,8 +162,8 @@ module "alb" {
 
   load_balancer_type = "application"
 
-  vpc_id  = "vpc-031d965c837ae8c8c"
-  subnets = ["subnet-04917ac9dca68e73f","subnet-00692a56ed482ab3f","subnet-0d9e4d033a937112e","subnet-02c280ed8caa02e3b"]
+  vpc_id  = module.vpc.vpc_id
+  subnets = module.vpc.public_subnets
 
   # For example only
   enable_deletion_protection = false
@@ -180,7 +180,7 @@ module "alb" {
   security_group_egress_rules = {
     all = {
       ip_protocol = "-1"
-      cidr_ipv4   = "175.0.0.0/19"
+      cidr_ipv4   = module.vpc.vpc_cidr_block
     }
   }
 
@@ -311,7 +311,7 @@ module "autoscaling" {
     }
   ]
 
-  vpc_zone_identifier = ["subnet-06dfc6f1edb0323aa","subnet-021c48594b3278c0b","subnet-0870e9b55b51ee01d","subnet-0570e042f6f3c0553"]
+  vpc_zone_identifier = module.vpc.private_subnets
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
@@ -348,7 +348,7 @@ module "autoscaling_sg" {
 
   name        = local.name
   description = "Autoscaling group security group"
-  vpc_id      = "vpc-031d965c837ae8c8c"
+  vpc_id      = module.vpc.vpc_id
 
   computed_ingress_with_source_security_group_id = [
     {
@@ -363,3 +363,19 @@ module "autoscaling_sg" {
   tags = local.tags
 }
 
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.0"
+
+  name = local.name
+  cidr = local.vpc_cidr
+
+  azs             = local.azs
+  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
+  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
+
+  enable_nat_gateway = true
+  single_nat_gateway = true
+
+  tags = local.tags
+}
