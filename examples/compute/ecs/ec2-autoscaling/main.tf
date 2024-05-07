@@ -34,7 +34,7 @@ locals {
 
 module "ecs_cluster" {
   source = "../../../../modules/compute/ecs/cluster" 
-
+  depends_on = [ module.autoscaling ]
   cluster_name = local.name
 
   # Capacity provider - autoscaling groups
