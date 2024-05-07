@@ -34,7 +34,6 @@ locals {
 
 module "ecs_cluster" {
   source = "../../../../modules/compute/ecs/cluster" 
-  depends_on = [ module.autoscaling ]
   cluster_name = local.name
 
   # Capacity provider - autoscaling groups
@@ -90,7 +89,7 @@ module "ecs_service" {
   # Container definition(s)
   container_definitions = {
     (local.container_name) = {
-      image = "public.ecr.aws/f9n5f1l7/dgs:latest"#"public.ecr.aws/ecs-sample-image/amazon-ecs-sample:latest"
+      image = "public.ecr.aws/ecs-sample-image/amazon-ecs-sample:latest"
       port_mappings = [
         {
           name          = local.container_name
@@ -131,7 +130,7 @@ module "ecs_service" {
     }
   }
 
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = ["subnet-06dfc6f1edb0323aa","subnet-021c48594b3278c0b","subnet-0870e9b55b51ee01d","subnet-0570e042f6f3c0553"]
   security_group_rules = {
     alb_http_ingress = {
       type                     = "ingress"
@@ -163,8 +162,8 @@ module "alb" {
 
   load_balancer_type = "application"
 
-  vpc_id  = module.vpc.vpc_id
-  subnets = module.vpc.public_subnets
+  vpc_id  = "vpc-031d965c837ae8c8c"
+  subnets = ["subnet-04917ac9dca68e73f","subnet-00692a56ed482ab3f","subnet-0d9e4d033a937112e","subnet-02c280ed8caa02e3b"]
 
   # For example only
   enable_deletion_protection = false
@@ -181,7 +180,7 @@ module "alb" {
   security_group_egress_rules = {
     all = {
       ip_protocol = "-1"
-      cidr_ipv4   = module.vpc.vpc_cidr_block
+      cidr_ipv4   = "175.0.0.0/19"
     }
   }
 
@@ -312,7 +311,7 @@ module "autoscaling" {
     }
   ]
 
-  vpc_zone_identifier = module.vpc.private_subnets
+  vpc_zone_identifier = ["subnet-06dfc6f1edb0323aa","subnet-021c48594b3278c0b","subnet-0870e9b55b51ee01d","subnet-0570e042f6f3c0553"]
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
@@ -364,19 +363,3 @@ module "autoscaling_sg" {
   tags = local.tags
 }
 
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
-
-  name = local.name
-  cidr = local.vpc_cidr
-
-  azs             = local.azs
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-
-  enable_nat_gateway = true
-  single_nat_gateway = true
-
-  tags = local.tags
-}
