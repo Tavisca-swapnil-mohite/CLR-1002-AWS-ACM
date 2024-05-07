@@ -251,7 +251,7 @@ module "autoscaling" {
 
 
   name = "${local.name}-${each.key}"
-
+  force_delete = true
   image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = each.value.instance_type
 
