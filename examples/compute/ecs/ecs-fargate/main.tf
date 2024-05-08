@@ -6,7 +6,7 @@ data "aws_availability_zones" "available" {}
 
 locals {
   region = "us-east-1"
-  azs      = slice(data.aws_availability_zones.available.names, 0, 3)
+  azs    = slice(data.aws_availability_zones.available.names, 0, 3)
 
   container_name = var.container_name
   container_port = 3000

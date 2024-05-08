@@ -221,7 +221,6 @@ module "autoscaling" {
       mixed_instances_policy     = {}
       user_data                  = <<-EOT
         #!/bin/bash
-
         cat <<'EOF' >> /etc/ecs/ecs.config
         ECS_CLUSTER=${var.cluster_name}
         ECS_LOGLEVEL=debug
@@ -253,45 +252,15 @@ module "autoscaling" {
   tag_specifications = [
     {
       resource_type = "instance"
-      tags = { 
-        AppName = "IaC"
-        Example            = var.cluster_name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = var.cluster_name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     },
     {
       resource_type = "volume"
-      tags = { 
-        AppName = "IaC"
-        Example            = var.cluster_name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = var.cluster_name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     },
     {
       resource_type = "network-interface"
-      tags = { 
-        AppName = "IaC"
-        Example            = var.cluster_name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = var.cluster_name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     }
   ]
 
@@ -302,19 +271,7 @@ module "autoscaling" {
   desired_capacity    = 1
 
   # https://github.com/hashicorp/terraform-provider-aws/issues/12582
-  autoscaling_group_tags = {
-    AmazonECSManaged   = true
-    AppName            = "IaC"
-    Example            = var.cluster_name
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = var.cluster_name
-    Product            = "poap"
-    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
+  autoscaling_group_tags = var.tags
 
   # Required for  managed_termination_protection = "ENABLED"
   protect_from_scale_in = true
