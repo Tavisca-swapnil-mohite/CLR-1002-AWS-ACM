@@ -159,7 +159,7 @@ variable "create_target_group" {
 }
 
 variable "target_group_arn" {
-  type        = string
+  type        = list(string)
   description = "Enter the ARN of Target Group if you want to attach an existing Target Group."
   default     = null
 }
