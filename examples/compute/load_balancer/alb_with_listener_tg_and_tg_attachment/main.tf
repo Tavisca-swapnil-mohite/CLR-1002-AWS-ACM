@@ -9,6 +9,13 @@ module "alb" {
   ip_address_type                   = var.ip_address_type
   deletion_protection_enabled       = var.deletion_protection_enabled
   name                              = var.name
+  infraOwner                        = var.infraOwner
+  dataClassification                = var.dataClassification
+  environment                       = var.environment
+  appName                           = var.appName
+  backup                            = var.backup
+  product                           = var.product
+  businessUnit                      = var.businessUnit
 }
 
 module "target_group" {
@@ -32,7 +39,8 @@ module "target_group" {
 
 module "listener" {
   source            = "../../../../modules/compute/listener"
-  target_group_arn  = var.create_target_group ? module.target_group.default_target_group_arn : var.target_group_arn
+  depends_on        = [module.target_group]
+  target_group_arn  = var.create_target_group ? module.target_group[0].default_target_group_arn : var.target_group_arn
   load_balancer_arn = module.alb.alb_arn
   listener_name     = var.listener_name
   http_enabled      = var.http_enabled
@@ -41,7 +49,7 @@ module "listener" {
 
 module "target_group_attachment" {
   source                   = "../../../../modules/compute/target_group_attachment"
-  target_group_arn         = var.create_target_group ? module.target_group.default_target_group_arn : var.target_group_arn
+  target_group_arn         = var.create_target_group ? module.target_group[0].default_target_group_arn : var.target_group_arn
   target_id                = var.target_id
   target_group_target_type = var.target_group_target_type
   target_port              = var.target_port
