@@ -30,7 +30,7 @@ locals {
 
 
 module "autoscaling" {
-  source  = "../../../../modules/compute/ec2_asg"
+  source  = "../../../modules/compute/ec2_asg"
   
 
   for_each = {
