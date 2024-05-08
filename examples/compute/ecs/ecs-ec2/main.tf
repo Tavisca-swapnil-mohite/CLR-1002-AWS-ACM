@@ -209,8 +209,8 @@ module "alb" {
 }
 
 module "autoscaling" {
-  source  = "terraform-aws-modules/autoscaling/aws"
-  version = "~> 6.5"
+  source  = "../../../../modules/compute/ec2_asg"
+  
 
   for_each = {
     # On-demand instances
