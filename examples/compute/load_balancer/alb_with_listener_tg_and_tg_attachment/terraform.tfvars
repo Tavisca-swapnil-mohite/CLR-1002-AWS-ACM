@@ -24,6 +24,7 @@ ip_address_type                   = "ipv4"
 security_group_ids                = ["sg-0529be6bea90f8657"]
 subnet_ids                        = ["subnet-0aed2bf388cb1527a", "subnet-04a4e7304419170a4"]
 create_target_group               = true
+target_group_arn                  = null
 target_port                       = 80
 target_id                         = "arn:aws:lambda:us-east-1:928814396842:function:test-function-5"
 infraOwner                        = "sre-cloud-reliability@tavisca.com"

@@ -24,6 +24,7 @@ ip_address_type                   = "ipv4"
 security_group_ids                = ["sg-0529be6bea90f8657"]
 subnet_ids                        = ["subnet-0aed2bf388cb1527a", "subnet-04a4e7304419170a4"]
 create_target_group               = true
+target_group_arn                  = null
 infraOwner                        = "sre-cloud-reliability@tavisca.com"
 dataClassification                = "internal"
 environment                       = "poc"
