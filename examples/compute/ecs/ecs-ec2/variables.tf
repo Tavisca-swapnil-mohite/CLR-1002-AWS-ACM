@@ -60,3 +60,23 @@ variable "memory" {
   type        = number
   default     = null
 }
+
+## Supporting variables
+variable "alb_subnets" {
+  description = "List of subnets to associate with the alb"
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_id" {
+  description = "The VPC id where the alb should be created"
+  type        = string
+  default     = ""
+}
+
+variable "vpc_cidr_block" {
+  description = "The VPC CIDR to be allowed in the alb sg"
+  type        = string
+  default     = ""
+}
+

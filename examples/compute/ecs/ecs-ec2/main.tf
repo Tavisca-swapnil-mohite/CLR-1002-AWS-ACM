@@ -6,7 +6,6 @@ data "aws_availability_zones" "available" {}
 
 locals {
   region = "us-east-1"
-  name   = "poap-ecs-ec2"
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
   container_name = var.container_name
@@ -115,7 +114,7 @@ module "ecs_service" {
   }
   memory = var.memory
 
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = var.service_subnet_ids
   security_group_rules = {
     alb_http_ingress = {
       type                     = "ingress"
@@ -147,8 +146,8 @@ module "alb" {
 
   load_balancer_type = "application"
 
-  vpc_id  = module.vpc.vpc_id
-  subnets = module.vpc.public_subnets
+  vpc_id  = var.vpc_id
+  subnets = var.alb_subnets
 
   # For example only
   enable_deletion_protection = false
@@ -165,7 +164,7 @@ module "alb" {
   security_group_egress_rules = {
     all = {
       ip_protocol = "-1"
-      cidr_ipv4   = module.vpc.vpc_cidr_block
+      cidr_ipv4   = var.vpc_cidr_block
     }
   }
 
@@ -296,7 +295,7 @@ module "autoscaling" {
     }
   ]
 
-  vpc_zone_identifier = module.vpc.private_subnets
+  vpc_zone_identifier = var.service_subnet_ids
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
@@ -333,7 +332,7 @@ module "autoscaling_sg" {
 
   name        = var.cluster_name
   description = "Autoscaling group security group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   computed_ingress_with_source_security_group_id = [
     {
@@ -344,23 +343,6 @@ module "autoscaling_sg" {
   number_of_computed_ingress_with_source_security_group_id = 1
 
   egress_rules = ["all-all"]
-
-  tags = local.tags
-}
-
-module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.0"
-
-  name = var.cluster_name
-  cidr = local.vpc_cidr
-
-  azs             = local.azs
-  private_subnets = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 4, k)]
-  public_subnets  = [for k, v in local.azs : cidrsubnet(local.vpc_cidr, 8, k + 48)]
-
-  enable_nat_gateway = true
-  single_nat_gateway = true
 
   tags = local.tags
 }
