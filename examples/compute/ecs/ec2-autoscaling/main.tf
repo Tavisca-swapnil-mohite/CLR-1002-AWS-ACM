@@ -7,25 +7,11 @@ data "aws_availability_zones" "available" {}
 locals {
   region = "us-east-1"
   name   = "poap-ecs-ec2"
-
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
-
-  container_name = "ecs-sample-v1"
+  container_name = var.container_name
   container_port = 80
-
-  tags = {
-    AppName            = "IaC"
-    Example            = local.name
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = local.name
-    Product            = "poap"
-    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
+  tags = var.tags
 }
 
 ################################################################################
@@ -34,10 +20,10 @@ locals {
 
 module "ecs_cluster" {
   source = "../../../../modules/compute/ecs/cluster" 
-  cluster_name = local.name
+  cluster_name = var.cluster_name
 
   # Capacity provider - autoscaling groups
-  default_capacity_provider_use_fargate = false
+  default_capacity_provider_use_fargate = var.default_capacity_provider_use_fargate
   autoscaling_capacity_providers = {
     # On-demand instances
     ex_1 = {
@@ -68,11 +54,11 @@ module "ecs_service" {
   source = "../../../../modules/compute/ecs/service"
 
   # Service
-  name        = local.name
+  name        = var.service_name
   cluster_arn = module.ecs_cluster.arn
 
   # Task Definition
-  requires_compatibilities = ["EC2"]
+  requires_compatibilities = var.requires_compatibilities
   capacity_provider_strategy = {
     # On-demand instances
     ex_1 = {
@@ -82,9 +68,7 @@ module "ecs_service" {
     }
   }
 
-  volume = {
-    my-vol = {}
-  }
+  volume = var.volume
 
   # Container definition(s)
   container_definitions = {
@@ -112,7 +96,7 @@ module "ecs_service" {
 
       enable_cloudwatch_logging              = true
       create_cloudwatch_log_group            = true
-      cloudwatch_log_group_name              = "/aws/ecs/${local.name}/${local.container_name}"
+      cloudwatch_log_group_name              = "/aws/ecs/${var.cluster_name}/${local.container_name}"
       cloudwatch_log_group_retention_in_days = 7
 
       log_configuration = {
@@ -129,7 +113,7 @@ module "ecs_service" {
       hostPort         = 80
     }
   }
-  memory = 512
+  memory = var.memory
 
   subnet_ids = module.vpc.private_subnets
   security_group_rules = {
@@ -159,7 +143,7 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 9.0"
 
-  name = local.name
+  name = var.cluster_name
 
   load_balancer_type = "application"
 
@@ -240,7 +224,7 @@ module "autoscaling" {
         #!/bin/bash
 
         cat <<'EOF' >> /etc/ecs/ecs.config
-        ECS_CLUSTER=${local.name}
+        ECS_CLUSTER=${var.cluster_name}
         ECS_LOGLEVEL=debug
         ECS_CONTAINER_INSTANCE_TAGS=${jsonencode(local.tags)}
         ECS_ENABLE_TASK_IAM_ROLE=true
@@ -250,7 +234,7 @@ module "autoscaling" {
   }
 
 
-  name = "${local.name}-${each.key}"
+  name = "${var.cluster_name}-${each.key}"
   force_delete = true
   image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = each.value.instance_type
@@ -260,8 +244,8 @@ module "autoscaling" {
   ignore_desired_capacity_changes = true
 
   create_iam_instance_profile = true
-  iam_role_name               = local.name
-  iam_role_description        = "ECS role for ${local.name}"
+  iam_role_name               = var.cluster_name
+  iam_role_description        = "ECS role for ${var.cluster_name}"
   iam_role_policies = {
     AmazonEC2ContainerServiceforEC2Role = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
     AmazonSSMManagedInstanceCore        = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
@@ -272,13 +256,13 @@ module "autoscaling" {
       resource_type = "instance"
       tags = { 
         AppName = "IaC"
-        Example            = local.name
+        Example            = var.cluster_name
         Backup             = "no"
         BusinessUnit       = "travel.poc"
         DataClassification = "internal"
         Environment        = "poc"
         InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
+        Name               = var.cluster_name
         Product            = "poap"
         Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
     },
@@ -286,13 +270,13 @@ module "autoscaling" {
       resource_type = "volume"
       tags = { 
         AppName = "IaC"
-        Example            = local.name
+        Example            = var.cluster_name
         Backup             = "no"
         BusinessUnit       = "travel.poc"
         DataClassification = "internal"
         Environment        = "poc"
         InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
+        Name               = var.cluster_name
         Product            = "poap"
         Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
     },
@@ -300,13 +284,13 @@ module "autoscaling" {
       resource_type = "network-interface"
       tags = { 
         AppName = "IaC"
-        Example            = local.name
+        Example            = var.cluster_name
         Backup             = "no"
         BusinessUnit       = "travel.poc"
         DataClassification = "internal"
         Environment        = "poc"
         InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
+        Name               = var.cluster_name
         Product            = "poap"
         Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
     }
@@ -322,13 +306,13 @@ module "autoscaling" {
   autoscaling_group_tags = {
     AmazonECSManaged   = true
     AppName            = "IaC"
-    Example            = local.name
+    Example            = var.cluster_name
     Backup             = "no"
     BusinessUnit       = "travel.poc"
     DataClassification = "internal"
     Environment        = "poc"
     InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = local.name
+    Name               = var.cluster_name
     Product            = "poap"
     Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
   }
@@ -347,7 +331,7 @@ module "autoscaling_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 5.0"
 
-  name        = local.name
+  name        = var.cluster_name
   description = "Autoscaling group security group"
   vpc_id      = module.vpc.vpc_id
 
@@ -368,7 +352,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
 
-  name = local.name
+  name = var.cluster_name
   cidr = local.vpc_cidr
 
   azs             = local.azs
