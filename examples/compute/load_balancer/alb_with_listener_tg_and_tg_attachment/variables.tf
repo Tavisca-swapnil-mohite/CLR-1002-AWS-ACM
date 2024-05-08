@@ -22,6 +22,7 @@ variable "vpc_cidr_block" {
 variable "internal" {
   type        = bool
   description = "A boolean flag to determine whether the ALB should be internal"
+  default     = true
 }
 
 variable "http_enabled" {
@@ -42,11 +43,13 @@ variable "cross_zone_load_balancing_enabled" {
 variable "http2_enabled" {
   type        = bool
   description = "A boolean flag to enable/disable HTTP/2"
+  default     = true
 }
 
 variable "idle_timeout" {
   type        = number
   description = "The time in seconds that the connection is allowed to be idle"
+  default     = 60
 }
 
 variable "ip_address_type" {
@@ -57,11 +60,13 @@ variable "ip_address_type" {
 variable "deletion_protection_enabled" {
   type        = bool
   description = "A boolean flag to enable/disable deletion protection for ALB"
+  default     = false
 }
 
 variable "deregistration_delay" {
   type        = number
   description = "The amount of time to wait in seconds before changing the state of a deregistering target to unused"
+  default     = 300
 }
 
 variable "health_check_path" {
