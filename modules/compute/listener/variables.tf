@@ -70,7 +70,7 @@ variable "https_ssl_policy" {
 
 variable "target_group_arn" {
   description = "Value of Target group ARN"
-  type        = string
+  type        = list(string)
 }
 
 variable "load_balancer_arn" {
