@@ -163,3 +163,32 @@ variable "target_group_arn" {
   description = "Enter the ARN of Target Group if you want to attach an existing Target Group."
   default     = null
 }
+
+variable "environment" {
+  description = "The environment name (e.g., poc, qa, stage, prod)"
+  type        = string
+}
+variable "appName" {
+  description = "The App name (e.g., Terraform )"
+  type        = string
+}
+variable "infraOwner" {
+  description = "The Infra Owner (e.g., sre-cloud-reliability@tavisca.com )"
+  type        = string
+}
+variable "businessUnit" {
+  description = "The environment name (e.g., travel.poc)"
+  type        = string
+}
+variable "backup" {
+  description = "Backup required (e.g., yes or no)"
+  type        = string
+}
+variable "dataClassification" {
+  description = "Data classification (e.g., internal)"
+  type        = string
+}
+variable "product" {
+  description = "The product name (e.g., poap )"
+  type        = string
+}

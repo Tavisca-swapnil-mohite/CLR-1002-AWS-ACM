@@ -19,6 +19,17 @@ resource "aws_lb" "default" {
   enable_xff_client_port                      = var.enable_xff_client_port
   enable_waf_fail_open                        = var.enable_waf_fail_open
 
+  tags = {
+    Environment        = var.environment
+    AppName            = var.appName
+    InfraOwner         = var.infraOwner
+    BusinessUnit       = var.businessUnit
+    Backup             = var.backup
+    Name               = var.name
+    DataClassification = var.dataClassification
+    Product            = var.product
+  }
+
   access_logs {
     bucket  = var.access_logs["bucket"]
     prefix  = var.access_logs["prefix"]

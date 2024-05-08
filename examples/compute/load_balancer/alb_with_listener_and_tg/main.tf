@@ -9,6 +9,13 @@ module "alb" {
   ip_address_type                   = var.ip_address_type
   deletion_protection_enabled       = var.deletion_protection_enabled
   name                              = var.name
+  infraOwner                        = var.infraOwner
+  dataClassification                = var.dataClassification
+  environment                       = var.environment
+  appName                           = var.appName
+  backup                            = var.backup
+  product                           = var.product
+  businessUnit                      = var.businessUnit
 }
 
 module "target_group" {
