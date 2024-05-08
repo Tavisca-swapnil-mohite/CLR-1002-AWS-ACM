@@ -12,6 +12,7 @@ variable "vpc_id_tg" {
 variable "deregistration_delay" {
   type        = number
   description = "The amount of time to wait in seconds before changing the state of a deregistering target to unused"
+  default     = 300
 }
 
 variable "health_check_path" {
