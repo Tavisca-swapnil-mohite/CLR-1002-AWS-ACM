@@ -33,7 +33,7 @@ module "target_group" {
 module "listener" {
   source            = "../../../../modules/compute/listener"
   depends_on        = [module.target_group]
-  target_group_arn  = var.create_target_group ? module.target_group[*].default_target_group_arn : var.target_group_arn
+  target_group_arn  = var.create_target_group ? module.target_group[0].default_target_group_arn : var.target_group_arn
   load_balancer_arn = module.alb.alb_arn
   listener_name     = var.listener_name
   http_enabled      = var.http_enabled
