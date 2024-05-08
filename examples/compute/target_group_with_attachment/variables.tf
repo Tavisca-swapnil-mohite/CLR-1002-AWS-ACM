@@ -12,6 +12,7 @@ variable "vpc_id_tg" {
 variable "deregistration_delay" {
   type        = number
   description = "The amount of time to wait in seconds before changing the state of a deregistering target to unused"
+  default     = 300
 }
 
 variable "health_check_path" {
@@ -64,7 +65,6 @@ variable "stickiness" {
 
 variable "target_id" {
   type        = string
-  default     = "ip"
   description = "The ID of the target. This is the Instance ID for an instance, or the container ID for an ECS container. If the target type is ip, specify an IP address. If the target type is lambda, specify the Lambda function ARN. If the target type is alb, specify the ALB ARN."
 }
 
