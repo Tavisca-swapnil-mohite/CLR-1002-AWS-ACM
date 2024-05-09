@@ -1,5 +1,9 @@
 data "aws_partition" "current" {}
 
+data "aws_ssm_parameter" "ecs_optimized_ami" {
+  name = var.ami_id_ssm_param_name 
+}
+
 locals {
   create = var.create 
 

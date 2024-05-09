@@ -307,6 +307,10 @@ variable "instance_maintenance_policy" {
   default     = {}
 }
 
+variable "ami_id_ssm_param_name" {
+  type = string
+  default = "Golden-AMI-ECS-Amazon2"
+}
 
 ################################################################################
 # Launch template

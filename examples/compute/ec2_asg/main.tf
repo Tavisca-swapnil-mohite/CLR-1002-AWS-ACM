@@ -1,12 +1,8 @@
 data "aws_availability_zones" "available" {}
 
-data "aws_ssm_parameter" "ecs_optimized_ami" {
-  name = "Golden-AMI-ECS-Amazon2"
-}
-
 locals {
   region = "us-east-1"
-  name   = "poap-ecs-ec2"
+  name   = var.asg_name
 
   vpc_cidr = "10.0.0.0/16"
   azs      = slice(data.aws_availability_zones.available.names, 0, 3)
@@ -14,18 +10,7 @@ locals {
   container_name = "ecs-sample"
   container_port = 80
 
-  tags = {
-    AppName            = "IaC"
-    Example            = local.name
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = local.name
-    Product            = "poap"
-    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
+  tags = var.tags
 }
 
 
@@ -55,14 +40,14 @@ module "autoscaling" {
 
   name = "${local.name}-${each.key}"
 
-  image_id      = data.aws_ssm_parameter.ecs_optimized_ami.value
+  image_id      = var.ami_id_ssm_param_name
   instance_type = each.value.instance_type
 
-  security_groups                 = ["sg-0a0c62f544cbbb21d"]
+  security_groups                 = var.asg_sec_grps
   user_data                       = base64encode(each.value.user_data)
-  ignore_desired_capacity_changes = true
+  ignore_desired_capacity_changes = var.ignore_desired_capacity_changes
 
-  create_iam_instance_profile = true
+  create_iam_instance_profile = var.create_iam_instance_profile
   iam_role_name               = local.name
   iam_role_description        = "ECS role for ${local.name}"
   iam_role_policies = {
@@ -73,68 +58,26 @@ module "autoscaling" {
   tag_specifications = [
     {
       resource_type = "instance"
-      tags = { 
-        AppName = "IaC"
-        Example            = local.name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     },
     {
       resource_type = "volume"
-      tags = { 
-        AppName = "IaC"
-        Example            = local.name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     },
     {
       resource_type = "network-interface"
-      tags = { 
-        AppName = "IaC"
-        Example            = local.name
-        Backup             = "no"
-        BusinessUnit       = "travel.poc"
-        DataClassification = "internal"
-        Environment        = "poc"
-        InfraOwner         = "sre-cloud-reliability@tavisca.com"
-        Name               = local.name
-        Product            = "poap"
-        Repository = "https://github.com/terraform-aws-modules/terraform-aws-ecs" }
+      tags = var.tags
     }
   ]
 
-  vpc_zone_identifier = ["subnet-01d4d19deaa34db85", "subnet-061e332b24aecd27b", "subnet-060048463710e54c4"]
+  vpc_zone_identifier = var.asg_subnet_ids
   health_check_type   = "EC2"
   min_size            = 1
   max_size            = 1
   desired_capacity    = 1
 
   # https://github.com/hashicorp/terraform-provider-aws/issues/12582
-  autoscaling_group_tags = {
-    AmazonECSManaged   = true
-    AppName            = "IaC"
-    Example            = local.name
-    Backup             = "no"
-    BusinessUnit       = "travel.poc"
-    DataClassification = "internal"
-    Environment        = "poc"
-    InfraOwner         = "sre-cloud-reliability@tavisca.com"
-    Name               = local.name
-    Product            = "poap"
-    Repository         = "https://github.com/terraform-aws-modules/terraform-aws-ecs"
-  }
+  autoscaling_group_tags = var.tags
 
   # Required for  managed_termination_protection = "ENABLED"
   protect_from_scale_in = true
