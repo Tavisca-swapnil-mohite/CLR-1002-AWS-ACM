@@ -159,6 +159,7 @@ resource "aws_launch_template" "this" {
 
   instance_type = var.instance_type
 
+  ## Either instance type or instance requirments
   dynamic "instance_requirements" {
     for_each = length(var.instance_requirements) > 0 ? [var.instance_requirements] : []
     content {
@@ -253,6 +254,7 @@ resource "aws_launch_template" "this" {
     }
   }
 
+  ###
   dynamic "maintenance_options" {
     for_each = length(var.maintenance_options) > 0 ? [var.maintenance_options] : []
     content {
@@ -260,6 +262,7 @@ resource "aws_launch_template" "this" {
     }
   }
 
+  ## Additional configurations
   dynamic "metadata_options" {
     for_each = length(var.metadata_options) > 0 ? [var.metadata_options] : []
     content {
