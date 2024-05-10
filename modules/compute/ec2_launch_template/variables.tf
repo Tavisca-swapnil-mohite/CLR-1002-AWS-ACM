@@ -1,281 +1,150 @@
-
-variable "create_launch_template" {
-  description = "Determines whether to create launch template or not"
-  type        = bool
-  default     = true
+variable "instance_type" {
+  type = string
 }
 
-variable "launch_template_name" {
-  description = "Name of launch template to be created"
-  type        = string
-  default     = ""
+variable "ebs_volume_details" {
+  type = list(map(string))
+  default = null
 }
 
-variable "launch_template_use_name_prefix" {
-  description = "Determines whether to use `launch_template_name` as is or create a unique name beginning with the `launch_template_name` as the prefix"
-  type        = bool
-  default     = true
+variable "instance_iam_role" {
+  type = string
 }
 
-variable "launch_template_description" {
-  description = "Description of the launch template"
-  type        = string
-  default     = null
-}
-
-variable "default_version" {
-  description = "Default Version of the launch template"
-  type        = string
-  default     = null
-}
-
-variable "update_default_version" {
-  description = "Whether to update Default Version each update. Conflicts with `default_version`"
-  type        = string
-  default     = null
-}
-
-variable "disable_api_termination" {
-  description = "If true, enables EC2 instance termination protection"
-  type        = bool
-  default     = null
-}
-
-variable "disable_api_stop" {
-  description = "If true, enables EC2 instance stop protection"
-  type        = bool
-  default     = null
-}
-
-variable "instance_initiated_shutdown_behavior" {
-  description = "Shutdown behavior for the instance. Can be `stop` or `terminate`. (Default: `stop`)"
-  type        = string
-  default     = null
-}
-
-variable "kernel_id" {
-  description = "The kernel ID"
-  type        = string
-  default     = null
-}
-
-variable "ram_disk_id" {
-  description = "The ID of the ram disk"
-  type        = string
-  default     = null
-}
-
-variable "block_device_mappings" {
-  description = "Specify volumes to attach to the instance besides the volumes specified by the AMI"
-  type        = list(any)
-  default     = []
-}
-
-variable "capacity_reservation_specification" {
-  description = "Targeting for EC2 capacity reservations"
-  type        = any
-  default     = {}
-}
-
-variable "cpu_options" {
-  description = "The CPU options for the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "credit_specification" {
-  description = "Customize the credit specification of the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "elastic_gpu_specifications" {
-  description = "The elastic GPU to attach to the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "elastic_inference_accelerator" {
-  description = "Configuration block containing an Elastic Inference Accelerator to attach to the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "enclave_options" {
-  description = "Enable Nitro Enclaves on launched instances"
-  type        = map(string)
-  default     = {}
-}
-
-variable "hibernation_options" {
-  description = "The hibernation options for the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "instance_market_options" {
-  description = "The market (purchasing) option for the instance"
-  type        = any
-  default     = {}
-}
-
-variable "license_specifications" {
-  description = "A list of license specifications to associate with"
-  type        = map(string)
-  default     = {}
-}
-
-variable "maintenance_options" {
-  description = "The maintenance options for the instance"
-  type        = any
-  default     = {}
-}
-
-variable "network_interfaces" {
-  description = "Customize network interfaces to be attached at instance boot time"
-  type        = list(any)
-  default     = []
-}
-
-variable "placement" {
-  description = "The placement of the instance"
-  type        = map(string)
-  default     = {}
-}
-
-variable "private_dns_name_options" {
-  description = "The options for the instance hostname. The default values are inherited from the subnet"
-  type        = map(string)
-  default     = {}
-}
-
-variable "tag_specifications" {
-  description = "The tags to apply to the resources during launch"
-  type        = list(any)
-  default     = []
-}
-
-variable "ebs_optimized" {
-  description = "If true, the launched EC2 instance will be EBS-optimized"
-  type        = bool
-  default     = null
-}
-
-variable "image_id" {
-  description = "The AMI from which to launch the instance"
-  type        = string
-  default     = ""
+variable "ami_id_ssm_param_name" {
+  type = string
+  default = "Golden-AMI-EC2-Amazon2-imdsv2:4"
 }
 
 variable "key_name" {
-  description = "The key name that should be used for the instance"
-  type        = string
-  default     = null
+  type = string
 }
 
-variable "user_data" {
-  description = "The Base64-encoded user data to provide when launching the instance"
-  type        = string
-  default     = null
+variable "vpc_subnet_ids" {
+  type = list(string)
 }
 
-variable "security_groups" {
-  description = "A list of security group IDs to associate"
-  type        = list(string)
-  default     = []
+variable "security_group_ids" {
+  type = list(string)
 }
 
-variable "instance_type" {
-  description = "The type of the instance. If present then `instance_requirements` cannot be present"
-  type        = string
-  default     = null
+variable "termination_protection" {
+  type = bool
+  default = false
 }
 
-variable "metadata_options" {
-  description = "Customize the metadata options for the instance"
-  type        = map(string)
-  default     = {}
+variable "stop_protection" {
+  type = bool
+  default = false
 }
 
-
-variable "enable_monitoring" {
-  description = "Enables/disables detailed monitoring"
-  type        = bool
-  default     = true
+variable "ebs_optimized" {
+  type = bool
+  default = false
+  description = "If true, the launched EC2 instance will be EBS-optimized."
 }
 
-variable "instance_requirements" {
-  description = "The attribute requirements for the type of instance. If present then `instance_type` cannot be present"
-  type        = any
-  default     = {}
+variable "elastic_gpu_type" {
+  type = string
+  default = null
+  description = "The elastic GPU Type to attach to the instance."
 }
 
-variable "tags" {
-  description = "A map of tags to assign to resources"
-  type        = map(string)
-  default     = {}
+variable "elastic_inference_accelerator_type" {
+  type = string
+  default = null
+  description = "Elastic Inference Accelerator Type to attach to the instance."
 }
 
-################################################################################
-# IAM Role / Instance Profile
-################################################################################
-
-variable "create_iam_instance_profile" {
-  description = "Determines whether an IAM instance profile is created or to use an existing IAM instance profile"
-  type        = bool
-  default     = false
+variable "enable_nitro_enclaves" {
+  type = bool
+  default = false
+  description = "If set to true, Nitro Enclaves will be enabled on the instance."
 }
 
-variable "iam_instance_profile_arn" {
-  description = "Amazon Resource Name (ARN) of an existing IAM instance profile. Used when `create_iam_instance_profile` = `false`"
-  type        = string
-  default     = null
+variable "enable_hibernation" {
+  type = bool
+  default = false
+  description = "If set to true, the launched EC2 instance will hibernation enabled."
 }
 
-variable "iam_instance_profile_name" {
-  description = "The name of the IAM instance profile to be created (`create_iam_instance_profile` = `true`) or existing (`create_iam_instance_profile` = `false`)"
-  type        = string
-  default     = null
+variable "instance_initiated_shutdown_behavior" {
+  type = string
+  default = null
+  description = "Shutdown behavior for the instance. Can be stop or terminate. (Default: stop)."
 }
 
-variable "iam_role_name" {
-  description = "Name to use on IAM role created"
-  type        = string
-  default     = null
+variable "kernel_id" {
+  type = string
+  default = null
+  description = "The kernel ID."
 }
 
-variable "iam_role_use_name_prefix" {
-  description = "Determines whether the IAM role name (`iam_role_name`) is used as a prefix"
-  type        = bool
-  default     = true
+variable "userdata" {
+  type = string
+  description = "Userdata for the Instances. Expects userdata in base64 encoded form."
 }
 
-variable "iam_role_path" {
-  description = "IAM role path"
-  type        = string
-  default     = null
+variable "metadata_http_put_response_hop_limit" {
+  type = number
+  default = 1
 }
 
-variable "iam_role_description" {
-  description = "Description of the role"
-  type        = string
-  default     = null
+variable "instance_metadata_tags" {
+  type = string
+  default = null
 }
 
-variable "iam_role_permissions_boundary" {
-  description = "ARN of the policy that is used to set the permissions boundary for the IAM role"
-  type        = string
-  default     = null
+variable "capacity_reservation_specification" {
+  type = map(any)
+  default = null
 }
 
-variable "iam_role_policies" {
-  description = "IAM policies to attach to the IAM role"
-  type        = map(string)
-  default     = {}
+variable "cpu_options" {
+  type = map(string)
+  default = null
 }
 
-variable "iam_role_tags" {
-  description = "A map of additional tags to add to the IAM role created"
-  type        = map(string)
-  default     = {}
+variable "credit_specification_cpu_credits" {
+  type = string
+  default = null
+}
+
+variable "license_configuration_arn" {
+  type = string
+  default = null
+}
+
+variable "monitoring" {
+  type = bool
+  default = null
+}
+
+####################
+variable "tag_product" {
+  type = string
+}
+
+variable "tag_appname" {
+  type = string
+}
+
+variable "tag_infraowner" {
+  type = string
+}
+
+variable "tag_environment" {
+  type = string
+}
+
+variable "tag_backup" {
+  type = string
+}
+
+variable "tag_businessunit" {
+  type = string
+}
+
+variable "tag_dataclassification" {
+  type = string
 }
