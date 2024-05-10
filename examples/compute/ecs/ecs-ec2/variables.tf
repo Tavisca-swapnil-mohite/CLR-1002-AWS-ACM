@@ -55,10 +55,22 @@ variable "container_name" {
   default     = ""
 }
 
+variable "container_port" {
+  description = "Port of the container"
+  type        = number
+  default     = null
+}
+
 variable "memory" {
   description = "The amount (in MiB) of memory to present to the container. If your container attempts to exceed the memory specified here, the container is killed. The total amount of memory reserved for all containers within a task must be lower than the task `memory` value, if one is specified"
   type        = number
   default     = null
+}
+
+variable "container_definitions" {
+  description = "A map of valid [container definitions](http://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDefinition.html). Please note that you should only provide values that are part of the container definition document"
+  type        = any
+  default     = {}
 }
 
 ## Supporting variables
