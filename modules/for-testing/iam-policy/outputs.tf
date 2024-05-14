@@ -1,7 +1,7 @@
 output "policy_arn" {
-    value = aws_iam_policy.policy.arn
+    value = aws_iam_policy.this.arn
 }
 
-output "policy_json" {
-    value = data.aws_iam_policy_document.policy_document.json
+output "policy_name" {
+    value = aws_iam_policy.this.name
 }

@@ -23,3 +23,15 @@ variable "resource_based_policy" {
     )
     default = null
 }
+
+[{
+        "principal" = "Service"
+        "identifier" = "ec2.amazonaws.com"
+        "actions" = "[s3:*]"
+        "resources" = "*"
+},{
+        "principal" = "Service"
+        "identifier" = "lambda.amazonaws.com"
+        "actions" = "[ec2:*]"
+        "resources" = "*"
+}]
