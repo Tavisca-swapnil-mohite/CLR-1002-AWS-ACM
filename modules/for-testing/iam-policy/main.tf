@@ -1,8 +1,9 @@
 data "aws_default_tags" "default" {}
 
 resource "aws_iam_policy" "this" {
-    name_prefix = var.name
-    description = var.name_prefix
+    name = var.name
+    name_prefix = var.name_prefix
+    description = var.description
     path        = var.path
     policy = jsonencode(var.policy)
     tags = {
