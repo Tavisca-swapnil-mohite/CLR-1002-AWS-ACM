@@ -11,6 +11,7 @@ module "dd_cmk" {
   delete_after_days = var.delete_after_days
   key_description   = var.key_description
   key_policy_map    = var.key_policy_map
+  kms_tags = var.kms_tags
   # need_cmk = (var.encryption_key_details.key_type == "customer_managed" ? true : false)
 }
 
@@ -19,15 +20,18 @@ module "dd_cmk" {
 resource "aws_dynamodb_table" "dd_table_provisioned" {
   name                        = var.table_name
   table_class                 = var.table_class
-  billing_mode                = "PAY_PER_REQUEST"
+  billing_mode                = "PROVISIONED"
   hash_key                    = var.table_hash_key
   range_key                   = var.table_range_key
   deletion_protection_enabled = var.enable_deletion_protection
+  read_capacity               = var.table_read_capacity_unit
+  write_capacity              = var.table_write_capacity_unit
+
   ttl {
     enabled        = var.ttl_enabled
     attribute_name = var.attribute_for_ttl
   }
-  stream_enabled   = var.is_stream_enabled    # run terrform apply 2 times incase of import from table is true
+  stream_enabled   = var.is_stream_enabled   # run terrform apply 2 times incase of import from table is true
   stream_view_type = (var.is_stream_enabled == false ? null : var.stream_view_type)
 
   point_in_time_recovery {
@@ -85,7 +89,7 @@ dynamic "import_table" {
   }
 
 lifecycle {
-  ignore_changes = [import_table,local_secondary_index ]
+  ignore_changes = [ read_capacity,write_capacity,import_table,local_secondary_index ]
 }
 
 timeouts {

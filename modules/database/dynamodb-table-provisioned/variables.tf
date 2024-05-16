@@ -1,5 +1,5 @@
 ######################################################################################
-# Optional variable and value is set to default
+# Optional var and value is set to default
 
 variable "is_stream_enabled" {
   description = "This field is to enable dyanmoDB streaming. run terrform apply 2 times incase of import from table is true"
@@ -53,7 +53,7 @@ variable "attributes" {
     type = string
   }))
   validation {
-    condition     = length(var.attributes) > 2
+    condition     = length(var.attributes) > 0
     error_message = "Attribute should have hash key and range key at minimum"
   }
 }
@@ -66,6 +66,7 @@ variable "gsi_indices" {
     hash_key       = string
 
   }))
+  default = {}
 }
 
 variable "lsi_indices" {
@@ -101,6 +102,65 @@ variable "table_class" {
     error_message = "table_class should not be empty"
   }
 }
+variable "table_read_capacity_unit" {
+  description = "Number of read units for this table. Must be set if billing_mode is set to PROVISIONED"
+  type = number
+  validation {
+    condition     = var.table_read_capacity_unit > 0
+    error_message = "table_read_capacity_unit should  be > 0"
+  }
+}
+
+variable "table_write_capacity_unit" {
+  description = "Number of write units for this table. Must be set if billing_mode is set to PROVISIONED"
+  type = number
+  validation {
+    condition     = var.table_write_capacity_unit > 0
+    error_message = "table_write_capacity_unit should  be > 0"
+  }
+}
+
+variable "table_autoscaling_min_read_capacity_unit" {
+  description = "Min number of read units for this table and Index autoscaling."
+  type = number
+  validation {
+    condition     = var.table_autoscaling_min_read_capacity_unit > 0
+    error_message = "table_autoscaling_min_read_capacity_unit should  be > 0"
+  }
+
+}
+variable "table_autoscaling_max_read_capacity_unit" {
+  description = "Max number of read units for this table and Index autoscaling."
+  type = number
+}
+
+variable "table_autoscaling_min_write_capacity_unit" {
+  description = "Min number of write units for this table and Index autoscaling."
+  type = number
+  validation {
+    condition     = var.table_autoscaling_min_write_capacity_unit > 0
+    error_message = "table_autoscaling_min_write_capacity_unit should  be > 0"
+  }
+}
+variable "table_autoscaling_max_write_capacity_unit" {
+  description = "Max number of write units for this table and Index autoscaling."
+  type = number
+}
+
+variable "table_write_target_percent" {
+  type = number
+  validation {
+    condition     = var.table_write_target_percent > 0
+    error_message = "table_write_target_percent should  be > 0"
+  }
+}
+variable "table_read_target_percent" {
+  type = number
+  validation {
+    condition     = var.table_read_target_percent > 0
+    error_message = "table_read_target_percent should  be > 0"
+  }
+}
 
 ########################################################################################################
 ##                                                                                                    ##
@@ -109,17 +169,15 @@ variable "table_class" {
 ########################################################################################################
 
 variable "encryption_key_details" {
-  description = "for key_type possible values are 'dynamoDB_managed' , 'aws_managed', 'customer_managed' "
+  description = "for key_type possible value is 'customer_managed' "
   type = object({
-    key_type = optional(string,"dynamoDB_managed")  
+    key_type = optional(string,"customer_managed")  
   })
 }
 
 variable "kms_alias" {
-  type    = string
-  default = "alias/nrt_encryption_key"
   description = "define in the form of 'alias/unique_key_name'"
-   
+  type    = string
 }
 
 variable "delete_after_days" {
@@ -127,103 +185,113 @@ variable "delete_after_days" {
   type    = number
   default = 30
 }
-
 variable "key_description" {
   description = "The description of the key as visible in AWS console"
   type    = string
-  default = "key_for_dynamoDB-dest"
+}
+variable "kms_tags" {
+  type = object({
+    DataClassification = string
+    Environment        = string
+    AppName            = string
+    InfraOwner         = string
+    BusinessUnit       = string
+    Backup             = string
+    Product            = string
+    Name               = string
+  })
 }
 variable "key_policy_map" {
   description = "A valid policy JSON document"
   type = any
-  default = {
-    "Id" : "key-consolepolicy-3",
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Sid" : "Enable IAM User Permissions",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "arn:aws:iam::928814396842:root"
-        },
-        "Action" : "kms:*",
-        "Resource" : "*"
-      },
-      {
-        "Sid" : "Allow access for Key Administrators",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : [
-            "arn:aws:iam::928814396842:role/adfs-devops",
-            "arn:aws:iam::928814396842:role/adfs-governance"
-          ]
-        },
-        "Action" : [
-          "kms:Create*",
-          "kms:Describe*",
-          "kms:Enable*",
-          "kms:List*",
-          "kms:Put*",
-          "kms:Update*",
-          "kms:Revoke*",
-          "kms:Disable*",
-          "kms:Get*",
-          "kms:Delete*",
-          "kms:TagResource",
-          "kms:UntagResource",
-          "kms:ScheduleKeyDeletion",
-          "kms:CancelKeyDeletion"
-        ],
-        "Resource" : "*"
-      },
-      {
-        "Sid" : "Allow use of the key",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : [
-            "arn:aws:iam::928814396842:role/adfs-devops",
-            "arn:aws:iam::928814396842:role/aws-service-role/kafka.amazonaws.com/AWSServiceRoleForKafka",
-            "arn:aws:iam::928814396842:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Travel-NonProd-DevOps_58cf51ef9bc19c74"
-          ]
-        },
-        "Action" : [
-          "kms:Encrypt",
-          "kms:Decrypt",
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:DescribeKey"
-        ],
-        "Resource" : "*"
-      },
-      {
-        "Sid" : "Allow attachment of persistent resources",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : [
-            "arn:aws:iam::928814396842:role/adfs-devops",
-            "arn:aws:iam::928814396842:role/aws-service-role/kafka.amazonaws.com/AWSServiceRoleForKafka",
-            "arn:aws:iam::928814396842:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Travel-NonProd-DevOps_58cf51ef9bc19c74"
-          ]
-        },
-        "Action" : [
-          "kms:CreateGrant",
-          "kms:ListGrants",
-          "kms:RevokeGrant"
-        ],
-        "Resource" : "*",
-        "Condition" : {
-          "Bool" : {
-            "kms:GrantIsForAWSResource" : "true"
-          }
-        }
-      }
-    ]
-  }
+  # default = {
+  #   "Id" : "key-consolepolicy-3",
+  #   "Version" : "2012-10-17",
+  #   "Statement" : [
+  #     {
+  #       "Sid" : "Enable IAM User Permissions",
+  #       "Effect" : "Allow",
+  #       "Principal" : {
+  #         "AWS" : "arn:aws:iam::928814396842:root"
+  #       },
+  #       "Action" : "kms:*",
+  #       "Resource" : "*"
+  #     },
+  #     {
+  #       "Sid" : "Allow access for Key Administrators",
+  #       "Effect" : "Allow",
+  #       "Principal" : {
+  #         "AWS" : [
+  #           "arn:aws:iam::928814396842:role/adfs-devops",
+  #           "arn:aws:iam::928814396842:role/adfs-governance"
+  #         ]
+  #       },
+  #       "Action" : [
+  #         "kms:Create*",
+  #         "kms:Describe*",
+  #         "kms:Enable*",
+  #         "kms:List*",
+  #         "kms:Put*",
+  #         "kms:Update*",
+  #         "kms:Revoke*",
+  #         "kms:Disable*",
+  #         "kms:Get*",
+  #         "kms:Delete*",
+  #         "kms:TagResource",
+  #         "kms:UntagResource",
+  #         "kms:ScheduleKeyDeletion",
+  #         "kms:CancelKeyDeletion"
+  #       ],
+  #       "Resource" : "*"
+  #     },
+  #     {
+  #       "Sid" : "Allow use of the key",
+  #       "Effect" : "Allow",
+  #       "Principal" : {
+  #         "AWS" : [
+  #           "arn:aws:iam::928814396842:role/adfs-devops",
+  #           "arn:aws:iam::928814396842:role/aws-service-role/kafka.amazonaws.com/AWSServiceRoleForKafka",
+  #           "arn:aws:iam::928814396842:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Travel-NonProd-DevOps_58cf51ef9bc19c74"
+  #         ]
+  #       },
+  #       "Action" : [
+  #         "kms:Encrypt",
+  #         "kms:Decrypt",
+  #         "kms:ReEncrypt*",
+  #         "kms:GenerateDataKey*",
+  #         "kms:DescribeKey"
+  #       ],
+  #       "Resource" : "*"
+  #     },
+  #     {
+  #       "Sid" : "Allow attachment of persistent resources",
+  #       "Effect" : "Allow",
+  #       "Principal" : {
+  #         "AWS" : [
+  #           "arn:aws:iam::928814396842:role/adfs-devops",
+  #           "arn:aws:iam::928814396842:role/aws-service-role/kafka.amazonaws.com/AWSServiceRoleForKafka",
+  #           "arn:aws:iam::928814396842:role/aws-reserved/sso.amazonaws.com/AWSReservedSSO_Travel-NonProd-DevOps_58cf51ef9bc19c74"
+  #         ]
+  #       },
+  #       "Action" : [
+  #         "kms:CreateGrant",
+  #         "kms:ListGrants",
+  #         "kms:RevokeGrant"
+  #       ],
+  #       "Resource" : "*",
+  #       "Condition" : {
+  #         "Bool" : {
+  #           "kms:GrantIsForAWSResource" : "true"
+  #         }
+  #       }
+  #     }
+  #   ]
+  # }
 }
 
 ########################################################################################################
 ##                                                                                                    ##
-##                     table data import from source dynamoDB table                                   ##
+##                     table data import from source dynamoDB table (Optional                         ##
 ##                                                                                                    ##
 ########################################################################################################
 
@@ -245,7 +313,6 @@ variable "import_data_key_prefix" {
   type = string
   default = "abc"
 }
-
 variable "terrform_operation_timeout" {
   description = "provide a value in minute with 'm' appended if any operation takes more than default 360 minutes"
   type = string
