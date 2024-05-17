@@ -12,7 +12,7 @@ key_policy_statements = {
     principals =     {
           identifiers  = ["arn:aws:iam::928814396842:root"]
                   },
-    }, 
+    },
   "statement2" = {
     sid = "Allow access for Key Administrators",
     actions = [
