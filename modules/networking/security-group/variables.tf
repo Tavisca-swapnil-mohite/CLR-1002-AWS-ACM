@@ -1,4 +1,3 @@
-
 variable "name" {
   description = "The name of the security group"
   type        = string
@@ -23,8 +22,8 @@ variable "ingress_rules" {
     to_port         = number
     protocol        = string
     cidr_blocks     = list(string)
-    source_sg_id    = string
-    self_referencing = bool
+    security_groups    = list(string)
+    self = bool
   }))
   default     = []
 }
@@ -36,8 +35,8 @@ variable "egress_rules" {
     to_port         = number
     protocol        = string
     cidr_blocks     = list(string)
-    source_sg_id    = string
-    self_referencing = bool
+    security_groups    = list(string)
+    self = bool
   }))
   default     = []
 }
