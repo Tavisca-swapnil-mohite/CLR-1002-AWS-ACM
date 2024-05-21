@@ -12,8 +12,8 @@ resource "aws_security_group" "security_group" {
       to_port         = ingress.value.to_port
       protocol        = ingress.value.protocol
       cidr_blocks     = ingress.value.cidr_blocks
-      security_groups = ingress.value.source_sg_id != "" ? [ingress.value.source_sg_id] : []
-      self            = ingress.value.self_referencing
+      security_groups = ingress.value.security_groups
+      self            = ingress.value.self
     }
   }
 
@@ -25,8 +25,14 @@ resource "aws_security_group" "security_group" {
       to_port         = egress.value.to_port
       protocol        = egress.value.protocol
       cidr_blocks     = egress.value.cidr_blocks
-      security_groups = egress.value.source_sg_id != "" ? [egress.value.source_sg_id] : []
-      self            = egress.value.self_referencing
+      security_groups = egress.value.security_groups
+      self            = egress.value.self
     }
   }
+
+  tags = {
+    Name = "${data.aws_default_tags.default.tags.Product}-${data.aws_default_tags.default.tags.AppName}-${var.name}-sg"
+  }
 }
+
+data "aws_default_tags" "default" {}
