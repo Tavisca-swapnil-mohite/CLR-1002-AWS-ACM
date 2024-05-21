@@ -6,4 +6,4 @@ module "kms-example" {
     key_policy_statements = var.key_policy_statements
     tags = var.tags
      
-} 
+}
