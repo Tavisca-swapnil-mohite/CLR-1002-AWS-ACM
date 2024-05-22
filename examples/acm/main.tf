@@ -7,4 +7,3 @@ module acm {
   key_algorithm = var.key_algorithm
   tags = var.tags
 }
-

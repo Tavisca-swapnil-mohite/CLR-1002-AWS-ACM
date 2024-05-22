@@ -23,5 +23,5 @@ tags = {
 
 
   validation_method = "DNS"
-
+ key_algorithm = "RSA_2048"
 

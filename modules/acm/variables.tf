@@ -65,6 +65,6 @@ default = ""
 variable "key_algorithm" {
   description = "The key algorithm for the ACM certificate"
   type = string 
-  default = " "
+  default = ""
   
 }

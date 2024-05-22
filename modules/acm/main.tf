@@ -19,7 +19,7 @@ resource "aws_acm_certificate" "acm_certificate" {
   provider                  = aws.acm
   domain_name               = var.domain_name
   subject_alternative_names = var.subject_alternative_names
-  validation_method         = "DNS" # DNS validation should only be used for ACM as per the discussion with app hosting team
+  validation_method         = var.validation_method # DNS validation should only be used for ACM as per the discussion with app hosting team
   tags                      = var.tags
 
 //key algorithm configuration
