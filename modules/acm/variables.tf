@@ -55,16 +55,16 @@ variable "private_zone" {
 
 
 variable "validation_method" {
-description = "aauthorized to modify the DNS configuration for the domains in your certificate request"
-type = string
-default = ""
+  description = "aauthorized to modify the DNS configuration for the domains in your certificate request"
+  type        = string
+  default     = ""
 
 }
 
 
 variable "key_algorithm" {
   description = "The key algorithm for the ACM certificate"
-  type = string 
-  default = ""
-  
+  type        = string
+  default     = ""
+
 }

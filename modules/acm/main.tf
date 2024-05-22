@@ -5,7 +5,7 @@ locals {
 }
 
 data "aws_route53_zone" "route53_zone" {
-  provider     = aws.network    # We manage the hosted zones in central network account and acm certs in resp app account and hence, a provider for central account would be needed to fetch the hosted zones.
+  provider     = aws.network # We manage the hosted zones in central network account and acm certs in resp app account and hence, a provider for central account would be needed to fetch the hosted zones.
   name         = var.domain_name
   private_zone = var.private_zone
 }
@@ -22,9 +22,9 @@ resource "aws_acm_certificate" "acm_certificate" {
   validation_method         = var.validation_method # DNS validation should only be used for ACM as per the discussion with app hosting team
   tags                      = var.tags
 
-//key algorithm configuration
+  //key algorithm configuration
 
-key_algorithm = var.key_algorithm
+  key_algorithm = var.key_algorithm
 
   lifecycle {
     create_before_destroy = true

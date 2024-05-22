@@ -19,16 +19,16 @@ variable "domain_name" {
 
 
 variable "validation_method" {
-description = "A domain name for which the certificate should be issued"
-type = string
-default = ""
+  description = "A domain name for which the certificate should be issued"
+  type        = string
+  default     = ""
 
 }
 
 
 variable "key_algorithm" {
-description = "A domain name for which the certificate should be issued"
-type = string
-default = ""
+  description = "A domain name for which the certificate should be issued"
+  type        = string
+  default     = ""
 
 }
