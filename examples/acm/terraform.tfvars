@@ -20,3 +20,8 @@ tags = {
   ]
 
   domain_name = "wwwpoc.net"
+
+
+  validation_method = "DNS"
+
+
