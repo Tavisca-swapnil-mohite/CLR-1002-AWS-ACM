@@ -1,6 +1,6 @@
 output "arn" {
   description = "Certificate ARN."
-  value       = aws_acm_certificate.acm_certificate.arn
+  value       = aws_acm_certificate.acm_certificate_validation.arn
 }
 
 output "distinct_domain_names" {

@@ -53,7 +53,7 @@ resource "aws_route53_record" "validation" {
 resource "aws_acm_certificate_validation" "acm_certificate_validation" {
   count                   = var.validate_certificate ? 1 : 0
   provider                = aws.acm
-  certificate_arn         = aws_acm_certificate.acm_certificate.arn
+  certificate_arn         = aws_acm_certificate.acm_certificate_validation.arn
   validation_record_fqdns = aws_route53_record.validation.*.fqdn
 }
 
